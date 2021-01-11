@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
+        rb = GetComponent<Rigidbody>();
     }
 
     void Start()
