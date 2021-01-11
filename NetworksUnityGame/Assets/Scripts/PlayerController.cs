@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     GameObject turret;
     Transform firePoint;
     GameObject wheels;
+    GameObject AimMark;
 
     private void Awake()
     {
@@ -39,6 +40,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         turret = transform.Find("Turret").gameObject;
         firePoint = turret.transform.GetChild(0).transform.Find("FirePoint");
         wheels = transform.Find("Wheels").gameObject;
+        AimMark = GameObject.Find("AimMark");
     }
 
     void Start()
@@ -62,9 +64,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 500))
         {
-            aimPoint = new Vector3(hit.point.x, 0, hit.point.z);
+            aimPoint = new Vector3(hit.point.x, 0.1f, hit.point.z);
             //Debug.DrawLine(turret.transform.position, aimPoint, Color.red);
-            //marker.transform.position = aimPoint;
+            AimMark.transform.position = aimPoint;
         }
 
         if (Input.GetMouseButtonDown(0))

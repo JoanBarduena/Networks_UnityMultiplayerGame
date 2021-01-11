@@ -30,7 +30,7 @@ public class PlayerManagerCS : MonoBehaviour
 
     void CreateController()
     {
-        Vector3 pos = new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
+        Vector3 pos = new Vector3(UnityEngine.Random.Range(-10, 10), 0.8f, UnityEngine.Random.Range(-10, 10));
 
         PhotonNetwork.Instantiate("PhotonPrefabs/Tank", pos, Quaternion.identity); 
     }
