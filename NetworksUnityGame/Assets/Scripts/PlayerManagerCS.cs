@@ -30,6 +30,8 @@ public class PlayerManagerCS : MonoBehaviour
 
     void CreateController()
     {
-        PhotonNetwork.Instantiate("PhotonPrefabs/Tank", Vector3.zero, Quaternion.identity); //later random location
+        Vector3 pos = new Vector3(UnityEngine.Random.Range(-10, 10), 0, UnityEngine.Random.Range(-10, 10));
+
+        PhotonNetwork.Instantiate("PhotonPrefabs/Tank", pos, Quaternion.identity); 
     }
 }
