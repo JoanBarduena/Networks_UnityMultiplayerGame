@@ -7,14 +7,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
 {
 
     PhotonView PV;
-
     Rigidbody rb;
 
+    public float moveSpeed = 5.0f;
+    public float turnSpeed = 180f;
 
-    Vector3 moveAmount;
-    Vector3 smoothMoveVelocity;
-    public float moveSpeed = 10.0f;
-    public float smoothTime = 0.5f;
+    private string movementAxisName;
+    private string turnAxisName;
+    private float movementInputValue;
+    private float turnInputValue; 
 
     private void Awake()
     {
@@ -24,20 +25,29 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        
+        movementAxisName = "Vertical";
+        turnAxisName = "Horizontal"; 
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
+        movementInputValue = Input.GetAxis(movementAxisName);
+        turnInputValue = Input.GetAxis(turnAxisName);   
     }
 
     void Move()
     {
-        Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+        Vector3 movement = movementInputValue * transform.forward * moveSpeed * Time.deltaTime;
+        rb.MovePosition(rb.position + movement); 
+    }
 
-        moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * moveSpeed, ref smoothMoveVelocity, smoothTime);
+    void Turn()
+    {
+        float turn = turnInputValue * turnSpeed * Time.deltaTime;
+
+        Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
+        rb.MoveRotation(rb.rotation * turnRotation); 
     }
 
     void FixedUpdate()
@@ -45,6 +55,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (!PV.IsMine)
             return;
 
-        rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
+        Move();
+        Turn();
     }
 }
