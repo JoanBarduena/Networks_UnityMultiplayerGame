@@ -177,8 +177,8 @@ GameObject:
   - component: {fileID: -5143725784721353386}
   - component: {fileID: 8631677291743228511}
   m_Layer: 0
-  m_Name: Tank
-  m_TagString: Untagged
+  m_Name: _Tank
+  m_TagString: Tank
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -225,7 +225,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 36797ffef13d2934b9df4b1eee1d60ad, type: 2}
+  - {fileID: 2100000, guid: 5b3826dd21e1d2b4a947c774023d1db3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -299,6 +299,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   turnSpeed: 90
+  turnInputValue: 0
+  turn: 0
+  turnRotation: {x: 0, y: 0, z: 0, w: 0}
+  tankColor: 4
 --- !u!54 &-5143725784721353386
 Rigidbody:
   m_ObjectHideFlags: 0

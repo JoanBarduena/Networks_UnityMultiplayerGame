@@ -8,7 +8,7 @@ public class Missile : MonoBehaviour
     
     void Awake()
     {
-        explosionParticles = (GameObject)Resources.Load("PhotonPrefabs/Explosion");
+        explosionParticles = (GameObject)Resources.Load("PhotonPrefabs/Tanks/Missiles/Explosion");
     }
 
     // Update is called once per frame
@@ -19,7 +19,8 @@ public class Missile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Instantiate(explosionParticles,transform.position,Quaternion.identity);
+        // TODO: change to PhotonNetwork.Instantiate 
+        Instantiate(explosionParticles, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }
