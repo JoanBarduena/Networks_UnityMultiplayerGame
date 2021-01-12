@@ -33,11 +33,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
     public float fireRate = 2; // missiles per second
     float lastShot = 0;
     private float bulletSpawnTime = 6.0f;
+    private int missileBounces = 1;
 
     // PowerUps
+    int bouncesIncrease = 1;
     float speedIncrease = 3;
     float fireRateIncrease = 2f;
-    float bouncesIncrease = 2;
     float healthIncrease = 50;
 
     // tank parts
@@ -140,6 +141,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         // TODO: delete and use line above //
         GameObject bullet = Instantiate((GameObject)Resources.Load(missileResourcePath), firePoint.position, Quaternion.LookRotation(turret.transform.forward));
         bullet.GetComponent<Rigidbody>().AddForce(turret.transform.forward * 15.0f, ForceMode.Impulse);
+        bullet.GetComponent<Missile>().bounces = missileBounces;
 
         Destroy(bullet, bulletSpawnTime);
         lastShot = 0;
@@ -169,6 +171,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 fireRate += (activate) ? fireRateIncrease : -fireRateIncrease;
                 break;
             case PowerUpType.BOUNCES:
+                missileBounces += (activate) ? bouncesIncrease : -bouncesIncrease;
                 break;
             case PowerUpType.HEALTH:
                 health = (activate) ? Mathf.Min(health + healthIncrease, maxHealth) : health;
