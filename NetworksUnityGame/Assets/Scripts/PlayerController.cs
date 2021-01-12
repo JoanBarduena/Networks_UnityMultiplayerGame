@@ -104,8 +104,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
     void Shoot()
     {
         if (!shoot) return;
-        GameObject bullet = PhotonNetwork.Instantiate("PhotonPrefabs/MissileGreen", firePoint.position, Quaternion.LookRotation(turret.transform.forward));
+        //GameObject bullet = PhotonNetwork.Instantiate("PhotonPrefabs/MissileGreen", firePoint.position, Quaternion.LookRotation(turret.transform.forward));
+        //bullet.GetComponent<Rigidbody>().AddForce(turret.transform.forward * 15.0f, ForceMode.Impulse);
+        // TO DELETE //
+        GameObject bullet = Instantiate((GameObject)Resources.Load("PhotonPrefabs/MissileGreen"), firePoint.position, Quaternion.LookRotation(turret.transform.forward));
         bullet.GetComponent<Rigidbody>().AddForce(turret.transform.forward * 15.0f, ForceMode.Impulse);
+
 
         Destroy(bullet, bulletSpawnTime);
         shoot = false;
@@ -126,8 +130,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     void FixedUpdate()
     {
-        if (!PV.IsMine)
-            return;
+        //if (!PV.IsMine)
+        //    return;
 
         Move();
         Turn();

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &5437541820789708590
+--- !u!1001 &2219422722666049742
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -70,12 +70,12 @@ PrefabInstance:
     - target: {fileID: 8221299093771231549, guid: 9fe3fe424868ac944b766e61904b0663,
         type: 3}
       propertyPath: m_Name
-      value: MissileGreen Variant
+      value: MissileYellow Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8985022019210014687, guid: 9fe3fe424868ac944b766e61904b0663,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0ab420e2856629243bd809cccc862fd1, type: 2}
+      objectReference: {fileID: 2100000, guid: b7275cbf36c85ea429b0ea4cefeaa312, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9fe3fe424868ac944b766e61904b0663, type: 3}
