@@ -26,10 +26,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private string movementAxisName;
     private string turnAxisName;
     private float movementInputValue;
-    public float turnInputValue; // debug
-    public float turn; // debug
-    public Quaternion turnRotation; // debug
-
+    private float turnInputValue;
 
     // Shooting
     private bool shoot = false;
@@ -86,9 +83,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         movementAxisName = "Vertical";
         turnAxisName = "Horizontal";
-
-        // aim marker (if placed)
-        //Instantiate(markerobj, ray.origin, Quaternion.identity);
     }
 
     // Update is called once per frame
@@ -99,12 +93,12 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         // Aiming
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //Debug.DrawLine(ray.origin, ray.origin + ray.direction * 50, Color.red);
+        Debug.DrawLine(ray.origin, ray.origin + ray.direction * 50, Color.red);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 500))
         {
             aimPoint = new Vector3(hit.point.x, 0.1f, hit.point.z);
-            //Debug.DrawLine(turret.transform.position, aimPoint, Color.red);
+            Debug.DrawLine(turret.transform.position, aimPoint, Color.red);
             AimMark.transform.position = aimPoint;
         }
 
@@ -122,9 +116,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     void Turn()
     {
-        turn = turnInputValue * turnSpeed * Time.deltaTime;
+        float turn = turnInputValue * turnSpeed * Time.deltaTime;
 
-        turnRotation = Quaternion.Euler(0f, turn, 0f);
+        Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
         rb.MoveRotation(rb.rotation * turnRotation);
     }
 
