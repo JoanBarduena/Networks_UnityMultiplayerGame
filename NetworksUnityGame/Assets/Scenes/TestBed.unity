@@ -1196,11 +1196,6 @@ PrefabInstance:
       propertyPath: viewIdField
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3333868779394944368, guid: 898063220e3e6c04f897eaf6c86cd807,
-        type: 3}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4059599704058761953, guid: 898063220e3e6c04f897eaf6c86cd807,
         type: 3}
       propertyPath: m_Name
