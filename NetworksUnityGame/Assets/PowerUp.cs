@@ -9,6 +9,7 @@ public enum PowerUpType
     FIRE_RATE,
     BOUNCES,
     HEALTH,
+    MINI_TANKS,
 
     NONE
 }

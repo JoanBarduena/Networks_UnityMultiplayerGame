@@ -29,9 +29,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
     private float turnInputValue;
 
     // Shooting
-    private bool shoot = false;
+    protected bool shoot = false;
     public float fireRate = 2; // missiles per second
-    float lastShot = 0;
+    private float lastShot = 0;
     private float bulletSpawnTime = 6.0f;
     private int missileBounces = 1;
 
@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     float speedIncrease = 3;
     float fireRateIncrease = 2f;
     float healthIncrease = 50;
+    List<GameObject> miniTanksList;
 
     // tank parts
     Vector3 aimPoint;
@@ -59,6 +60,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
         turret = transform.Find("Turret").gameObject;
         firePoint = turret.transform.GetChild(0).transform.Find("FirePoint");
         AimMark = GameObject.Find("AimMark");
+
+        miniTanksList = new List<GameObject>();
 
         switch (tankColor)
         {
@@ -131,7 +134,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         turret.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
     }
 
-    void Shoot()
+    protected void Shoot()
     {
         lastShot += Time.deltaTime;
         if (!shoot || lastShot < 1/fireRate) return;
@@ -142,6 +145,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         GameObject bullet = Instantiate((GameObject)Resources.Load(missileResourcePath), firePoint.position, Quaternion.LookRotation(turret.transform.forward));
         bullet.GetComponent<Rigidbody>().AddForce(turret.transform.forward * 15.0f, ForceMode.Impulse);
         bullet.GetComponent<Missile>().bounces = missileBounces;
+
 
         Destroy(bullet, bulletSpawnTime);
         lastShot = 0;
@@ -160,6 +164,25 @@ public class PlayerController : MonoBehaviourPunCallbacks
         Shoot();
     }
 
+    private void InstantiateMinitanks(bool activate)
+    {
+        if (activate)
+        {
+            Vector3 pos = transform.position;
+            pos.z += 5;
+            miniTanksList.Add(Instantiate((GameObject)Resources.Load("PhotonPrefabs/Tanks/TankMini"), pos, Quaternion.identity));
+            pos.z -= 10;
+            miniTanksList.Add(Instantiate((GameObject)Resources.Load("PhotonPrefabs/Tanks/TankMini"), pos, Quaternion.identity));
+        }
+        else
+        {
+            foreach (GameObject obj in miniTanksList)
+            {
+                Destroy(obj);
+            }
+        }
+    }
+
     public void ApplyPowerUp(PowerUpType type, bool activate)
     {
         switch (type)
@@ -175,6 +198,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 break;
             case PowerUpType.HEALTH:
                 health = (activate) ? Mathf.Min(health + healthIncrease, maxHealth) : health;
+                break;
+            case PowerUpType.MINI_TANKS:
+                InstantiateMinitanks(activate);
                 break;
             default:
                 break;
