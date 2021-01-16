@@ -30,8 +30,13 @@ public class PlayerManagerCS : MonoBehaviour
 
     void CreateController()
     {
-        Vector3 pos = new Vector3(UnityEngine.Random.Range(-10, 10), 0.8f, UnityEngine.Random.Range(-10, 10));
+        GameObject spawn = GameObject.Find("TankSpawn1");
 
-        PhotonNetwork.Instantiate("PhotonPrefabs/Tank", pos, Quaternion.identity); 
+        Debug.Log(spawn);
+
+        if (spawn)
+            spawn.gameObject.GetComponent<TankSpawner>().SpawnTank();
+        else if (PV.GetInstanceID() == 2)
+            GameObject.Find("TankSpawn2").gameObject.GetComponent<TankSpawner>().SpawnTank();
     }
 }

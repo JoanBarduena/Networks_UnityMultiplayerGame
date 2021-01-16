@@ -1,30 +1,50 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 
 public class BoxScript : MonoBehaviour
 {
-    //PhotonView PV;
+    public enum PowerUp 
+    {
+        NONE = 0, 
+        SPEED,
+        FIRERATE,
+        HEALTH
+    }
 
-    public int health = 3;
-    public bool has_powerup = false;
+    PhotonView PV;
+
+    public Slider hpbar;
+    Canvas canvas;
+
+    public int max_health = 3;
+    public int current_health;
+
+    public PowerUp powerup = PowerUp.NONE;
 
     private void Awake()
     {
-        //PV = GetComponent<PhotonView>();
+        PV = GetComponent<PhotonView>();
+        canvas = gameObject.GetComponentInChildren<Canvas>();
+        canvas.worldCamera = Camera.main;
+
+        hpbar.maxValue = max_health;
+        hpbar.value = max_health;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        current_health = max_health;
+        canvas.enabled = false;
     }
 
-    // Update is called once per frame
-    void Update()
+
+    void LateUpdate()
     {
-        
+        hpbar.transform.LookAt(hpbar.transform.position + Camera.main.transform.forward);
     }
 
     // Bullet Collision
@@ -32,18 +52,36 @@ public class BoxScript : MonoBehaviour
     {
         if (collision.collider.gameObject.tag == "Missile")
         {
-            health--;
+            canvas.enabled = true;
 
-            if (health <= 0)
-            {
-                //particles
-                //sound effect
+            current_health--;
+            hpbar.value = current_health;
 
-                if (has_powerup)
-                    PhotonNetwork.Instantiate("Prefabs/PowerUp", this.transform.position, Quaternion.identity);
-
-                Destroy(this.gameObject);
-            }
+            if (current_health <= 0)
+                Destroyed();
         }
+    }
+
+    private void Destroyed()
+    {
+        //particles
+        //sound effect
+
+        switch (powerup)
+        {
+            case PowerUp.NONE:
+                break;
+            case PowerUp.SPEED:
+                PhotonNetwork.Instantiate("Prefabs/PowerUp", this.transform.position, Quaternion.identity);
+                break;
+            case PowerUp.FIRERATE:
+                PhotonNetwork.Instantiate("Prefabs/PowerUp", this.transform.position, Quaternion.identity);
+                break;
+            case PowerUp.HEALTH:
+                PhotonNetwork.Instantiate("Prefabs/PowerUp", this.transform.position, Quaternion.identity);
+                break;
+        }
+
+        Destroy(this.gameObject);
     }
 }
