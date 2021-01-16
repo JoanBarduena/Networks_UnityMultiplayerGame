@@ -35,8 +35,8 @@ public class PlayerManagerCS : MonoBehaviour
         Debug.Log(spawn);
 
         if (spawn)
-            spawn.gameObject.GetComponent<TankSpawner>().SpawnTank();
+            spawn.gameObject.GetComponent<TankSpawner>().SpawnTank(1);
         else if (PV.GetInstanceID() == 2)
-            GameObject.Find("TankSpawn2").gameObject.GetComponent<TankSpawner>().SpawnTank();
+            GameObject.Find("TankSpawn2").gameObject.GetComponent<TankSpawner>().SpawnTank(2);
     }
 }

@@ -10,9 +10,17 @@ public class TankSpawner : MonoBehaviour
         GetComponent<MeshRenderer>().enabled = false;
     }
 
-    public void SpawnTank()
+    public void SpawnTank(int playerNumber)
     {
-        PhotonNetwork.Instantiate("PhotonPrefabs/Tank", this.transform.position, Quaternion.identity);
+        switch (playerNumber)
+        {
+            case 1:
+                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankBlue", this.transform.position, Quaternion.identity);
+                break;
+            case 2:
+                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankRed", this.transform.position, Quaternion.identity);
+                break;
+        }
         Destroy(this.gameObject);
     }
 }

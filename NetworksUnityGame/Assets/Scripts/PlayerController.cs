@@ -139,12 +139,13 @@ public class PlayerController : MonoBehaviourPunCallbacks
         lastShot += Time.deltaTime;
         if (!shoot || lastShot < 1/fireRate) return;
 
-        //GameObject bullet = PhotonNetwork.Instantiate(missileResourcePath, firePoint.position, Quaternion.LookRotation(turret.transform.forward));
-        //bullet.GetComponent<Rigidbody>().AddForce(turret.transform.forward * 15.0f, ForceMode.Impulse);
-        // TODO: delete and use line above //
-        GameObject bullet = Instantiate((GameObject)Resources.Load(missileResourcePath), firePoint.position, Quaternion.LookRotation(turret.transform.forward));
+        GameObject bullet = PhotonNetwork.Instantiate(missileResourcePath, firePoint.position, Quaternion.LookRotation(turret.transform.forward));
         bullet.GetComponent<Rigidbody>().AddForce(turret.transform.forward * 15.0f, ForceMode.Impulse);
         bullet.GetComponent<Missile>().bounces = missileBounces;
+        // TODO: delete and use line above //
+        //GameObject bullet = Instantiate((GameObject)Resources.Load(missileResourcePath), firePoint.position, Quaternion.LookRotation(turret.transform.forward));
+        //bullet.GetComponent<Rigidbody>().AddForce(turret.transform.forward * 15.0f, ForceMode.Impulse);
+        //bullet.GetComponent<Missile>().bounces = missileBounces;
 
 
         Destroy(bullet, bulletSpawnTime);
@@ -155,8 +156,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
     void FixedUpdate()
     {
         // TODO: uncomment
-        //if (!PV.IsMine)
-        //    return;
+
+        if (!PV.IsMine)
+            return;
 
         rb.angularVelocity = Vector3.zero;
         rb.velocity = Vector3.zero;
