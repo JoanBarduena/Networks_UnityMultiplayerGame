@@ -82,6 +82,6 @@ public class BoxScript : MonoBehaviour
                 break;
         }
 
-        Destroy(this.gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
 }
