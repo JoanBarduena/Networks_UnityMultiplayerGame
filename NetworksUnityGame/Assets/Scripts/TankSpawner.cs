@@ -20,6 +20,12 @@ public class TankSpawner : MonoBehaviour
             case 2:
                 PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankRed", this.transform.position, Quaternion.identity);
                 break;
+            case 3:
+                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankYellow", this.transform.position, Quaternion.identity);
+                break;
+            case 4:
+                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankGreen", this.transform.position, Quaternion.identity);
+                break;
         }
         Destroy(this.gameObject);
     }

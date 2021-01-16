@@ -268,6 +268,8 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: -9129186498176367615}
+  - {fileID: 4275223840766722454}
+  - {fileID: 1573748213946014928}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -5066,6 +5068,7 @@ GameObject:
   - component: {fileID: 2790548514053406936}
   - component: {fileID: 2541212771967017924}
   - component: {fileID: 4455266973698917106}
+  - component: {fileID: 1573748213946014928}
   m_Layer: 0
   m_Name: TankFree_Canon
   m_TagString: Untagged
@@ -5135,6 +5138,22 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &1573748213946014928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3916225007155662313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &4326378089990777302
 GameObject:
   m_ObjectHideFlags: 0
@@ -5147,6 +5166,7 @@ GameObject:
   - component: {fileID: 3315597999942278887}
   - component: {fileID: 6431748204698842709}
   - component: {fileID: 4945596944283169141}
+  - component: {fileID: 4275223840766722454}
   m_Layer: 0
   m_Name: Turret
   m_TagString: Untagged
@@ -5232,6 +5252,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 94
   m_CollisionDetection: 0
+--- !u!114 &4275223840766722454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4326378089990777302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &6224531817163165255
 GameObject:
   m_ObjectHideFlags: 0
