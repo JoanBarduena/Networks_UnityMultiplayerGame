@@ -129,6 +129,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (!PV.IsMine)
             return;
 
+        rb.angularVelocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
+
         Move();
         Turn();
         Aim();
