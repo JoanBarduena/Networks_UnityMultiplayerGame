@@ -30,10 +30,18 @@ public class PlayerManagerCS : MonoBehaviour
 
     void CreateController()
     {
-        var players = PhotonNetwork.CurrentRoom.PlayerCount;
+        //var players = PhotonNetwork.CurrentRoom.PlayerCount;
+        //var dict = PhotonNetwork.LocalPlayer.ActorNumber;
+        //for (; i < dict.Length; i++)
+        //{
+        //    if (PV.ViewID == dict[i].ActorNumber)
+        //        break;
+        //}
+        int i = PhotonNetwork.LocalPlayer.ActorNumber;
 
+        
         GameObject spawn= GameObject.Find("TankSpawn1");
-        switch (players)
+        switch (i)
         {
             case 1:
                 spawn = GameObject.Find("TankSpawn1");
@@ -51,7 +59,7 @@ public class PlayerManagerCS : MonoBehaviour
             default:
                 break;
         }
-        spawn.gameObject.GetComponent<TankSpawner>().SpawnTank(players);
+        spawn.gameObject.GetComponent<TankSpawner>().SpawnTank(i);
 
 
 
