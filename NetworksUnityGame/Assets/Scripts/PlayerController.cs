@@ -81,6 +81,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
                 Debug.LogError("Tank should be of some color");
                 break;
         }
+
+        if (PV.IsMine)
+            Camera.main.GetComponent<FollowCamera>().target = gameObject.transform;
     }
 
     void Start()
@@ -147,8 +150,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         //bullet.GetComponent<Rigidbody>().AddForce(turret.transform.forward * 15.0f, ForceMode.Impulse);
         //bullet.GetComponent<Missile>().bounces = missileBounces;
 
-
-        Destroy(bullet, bulletSpawnTime);
         lastShot = 0;
         shoot = false;
     }
@@ -160,8 +161,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (!PV.IsMine)
             return;
 
-        rb.angularVelocity = Vector3.zero;
-        rb.velocity = Vector3.zero;
+        //rb.angularVelocity = Vector3.zero;
+        //rb.velocity = Vector3.zero;
 
         Move();
         Turn();

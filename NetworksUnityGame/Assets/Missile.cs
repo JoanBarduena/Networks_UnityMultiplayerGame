@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Photon.Pun;
 using UnityEngine;
 
 public class Missile : MonoBehaviour
@@ -8,6 +7,9 @@ public class Missile : MonoBehaviour
     GameObject explosionParticles;
     public int bounces = 2;
 
+    float timeAlive = 0;
+
+    public static float maxTimeAlive = 6;
     void Awake()
     {
         explosionParticles = (GameObject)Resources.Load("PhotonPrefabs/Tanks/Missiles/Explosion");
@@ -17,7 +19,11 @@ public class Missile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        timeAlive += Time.deltaTime;
         transform.rotation = Quaternion.LookRotation(rb.velocity, Vector3.up);
+
+        if (timeAlive > maxTimeAlive)
+            PhotonNetwork.Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision collision)
