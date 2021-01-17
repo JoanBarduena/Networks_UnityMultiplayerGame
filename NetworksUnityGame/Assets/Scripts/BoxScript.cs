@@ -82,6 +82,7 @@ public class BoxScript : MonoBehaviour
                 break;
         }
 
-        PhotonNetwork.Destroy(gameObject);
+        int viewID = GetComponent<PhotonView>().ViewID;
+        PhotonNetwork.Destroy(PhotonView.Find(viewID).gameObject);
     }
 }
