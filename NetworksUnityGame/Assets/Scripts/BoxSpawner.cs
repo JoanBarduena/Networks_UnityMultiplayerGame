@@ -22,6 +22,6 @@ public class BoxSpawner : MonoBehaviour
 
     public void SpawnBox()
     {
-        PhotonNetwork.InstantiateRoomObject("Map/Box", this.transform.position, Quaternion.identity);
+        PhotonNetwork.Instantiate("Map/Box", this.transform.position, Quaternion.identity);
     }
 }

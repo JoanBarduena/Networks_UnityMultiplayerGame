@@ -35,6 +35,6 @@ public class Missile : MonoBehaviour
         }
         // TODO: change to PhotonNetwork.Instantiate 
         Instantiate(explosionParticles, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
 }
