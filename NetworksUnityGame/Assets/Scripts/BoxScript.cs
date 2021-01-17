@@ -41,6 +41,16 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
         canvas.enabled = false;
     }
 
+    void Update()
+    {
+        hpbar.value = current_health;
+
+        if (!canvas.enabled && current_health < max_health)
+            canvas.enabled = true;
+
+        if (current_health <= 0/* && PhotonNetwork.LocalPlayer.ActorNumber == PhotonNetwork.MasterClient.ActorNumber*/)
+            Destroyed();
+    }
 
     void LateUpdate()
     {
@@ -51,15 +61,7 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
     void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.gameObject.tag == "Missile")
-        {
-            canvas.enabled = true;
-
             current_health--;
-            hpbar.value = current_health;
-
-            if (PV.IsMine && current_health <= 0)
-                Destroyed();
-        }
     }
 
     private void Destroyed()
@@ -82,11 +84,10 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
                 break;
         }
 
-        int viewID = GetComponent<PhotonView>().ViewID;
-        PhotonNetwork.Destroy(PhotonView.Find(viewID).gameObject);
+        PhotonNetwork.Destroy(gameObject);
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
             stream.SendNext(current_health);
