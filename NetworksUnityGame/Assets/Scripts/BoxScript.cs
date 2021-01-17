@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class BoxScript : MonoBehaviour
+public class BoxScript : MonoBehaviourPun
 {
     public enum PowerUp 
     {
