@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4425287089574828692}
   - component: {fileID: 6002165896286833103}
   - component: {fileID: 6643059227589168589}
+  - component: {fileID: 8246388268261504233}
   m_Layer: 0
   m_Name: _Missile
   m_TagString: Missile
@@ -104,6 +105,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 2134525085864945172}
+  - {fileID: 8246388268261504233}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -165,3 +167,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.13787118
   m_Center: {x: 0, y: -0.000000016763806, z: 0.13787118}
+--- !u!114 &8246388268261504233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8221299093771231549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
