@@ -20,7 +20,7 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
     Canvas canvas;
 
     public int max_health = 3;
-    public int current_health;
+    [SerializeField] public int current_health;
 
     public PowerUp powerup = PowerUp.NONE;
 
@@ -48,7 +48,7 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
         if (!canvas.enabled && current_health < max_health)
             canvas.enabled = true;
 
-        if (current_health <= 0/* && PhotonNetwork.LocalPlayer.ActorNumber == PhotonNetwork.MasterClient.ActorNumber*/)
+        if (current_health <= 0)
             Destroyed();
     }
 
@@ -61,7 +61,10 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
     void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.gameObject.tag == "Missile")
+        {
+            this.photonView.RequestOwnership();
             current_health--;
+        }
     }
 
     private void Destroyed()
@@ -87,11 +90,11 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
         PhotonNetwork.Destroy(gameObject);
     }
 
-    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
             stream.SendNext(current_health);
         else
-            current_health = (int)stream.ReceiveNext();
+            this.current_health = (int)stream.ReceiveNext();
     }
 }
