@@ -57,7 +57,7 @@ public class BoxScript : MonoBehaviour
             current_health--;
             hpbar.value = current_health;
 
-            if (current_health <= 0)
+            if (PV.IsMine && current_health <= 0)
                 Destroyed();
         }
     }
