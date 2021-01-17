@@ -187,6 +187,7 @@ GameObject:
   - component: {fileID: 4772264552588204812}
   - component: {fileID: 4058466245429545450}
   - component: {fileID: 1337868008326734085}
+  - component: {fileID: 4278360856293489808}
   m_Layer: 0
   m_Name: Box
   m_TagString: Untagged
@@ -284,10 +285,11 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  observableSearch: 2
+  observableSearch: 0
   Synchronization: 3
   OwnershipTransfer: 0
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 1337868008326734085}
   viewIdField: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -307,6 +309,22 @@ MonoBehaviour:
   max_health: 3
   current_health: 0
   powerup: 0
+--- !u!114 &4278360856293489808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4013437058141220550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &5104985973663857137
 GameObject:
   m_ObjectHideFlags: 0

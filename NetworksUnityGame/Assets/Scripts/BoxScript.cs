@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class BoxScript : MonoBehaviourPun
+public class BoxScript : MonoBehaviourPun, IPunObservable
 {
     public enum PowerUp 
     {
@@ -84,5 +84,13 @@ public class BoxScript : MonoBehaviourPun
 
         int viewID = GetComponent<PhotonView>().ViewID;
         PhotonNetwork.Destroy(PhotonView.Find(viewID).gameObject);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+            stream.SendNext(current_health);
+        else
+            current_health = (int)stream.ReceiveNext();
     }
 }
