@@ -13,7 +13,7 @@ public enum TankColor
 
     NONE
 }
-public class PlayerController : MonoBehaviourPunCallbacks
+public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
 
     PhotonView PV;
@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     Canvas canvas;
     public Slider hpbar;
-    public float health = 100;
+    [SerializeField] public float health = 100;
     private float maxHealth = 100;
     public float moveSpeed = 5.0f;
     public float turnSpeed = 180f;
@@ -233,6 +233,9 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         if (collision.collider.gameObject.tag == "Missile")
         {
+            if (!PV.IsMine) //Only apply dmg if the tank is yours
+                return;
+
             health -= collision.collider.gameObject.GetComponent<Missile>().damage;
 
             if (health <= 0)
@@ -243,5 +246,15 @@ public class PlayerController : MonoBehaviourPunCallbacks
     void Die()
     {
         Debug.Log("IM DEAD");
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        //Sending health to other players
+
+        if (stream.IsWriting)
+            stream.SendNext(health);
+        else
+            health = (float)stream.ReceiveNext();
     }
 }
