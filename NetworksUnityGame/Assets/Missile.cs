@@ -6,6 +6,7 @@ public class Missile : MonoBehaviour
     Rigidbody rb;
     GameObject explosionParticles;
     public int bounces = 2;
+    public int damage = 10;
 
     float timeAlive = 0;
 
@@ -28,7 +29,7 @@ public class Missile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (bounces > 0)
+        if (bounces > 0 && collision.collider.gameObject.tag != "Tank")
         {
             bounces--;
             return;

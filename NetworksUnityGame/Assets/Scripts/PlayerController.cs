@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum TankColor
 {
@@ -18,6 +19,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     PhotonView PV;
     Rigidbody rb;
 
+    Canvas canvas;
+    public Slider hpbar;
     public float health = 100;
     private float maxHealth = 100;
     public float moveSpeed = 5.0f;
@@ -63,6 +66,10 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         miniTanksList = new List<GameObject>();
 
+        canvas = gameObject.GetComponentInChildren<Canvas>();
+        hpbar.maxValue = (int)maxHealth;
+        hpbar.value = (int)maxHealth;
+
         switch (tankColor)
         {
             case TankColor.BLUE:
@@ -90,6 +97,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         movementAxisName = "Vertical";
         turnAxisName = "Horizontal";
+        canvas.enabled = false;
     }
 
     // Update is called once per frame
@@ -113,6 +121,20 @@ public class PlayerController : MonoBehaviourPunCallbacks
         {
             shoot = true;
         }
+
+        HandleHealthBar();
+    }
+
+    void HandleHealthBar()
+    {
+        //hp bar update
+        hpbar.value = (int)health;
+        hpbar.transform.parent.LookAt(hpbar.transform.position + Camera.main.transform.forward);
+
+        if (!canvas.enabled && health < maxHealth)
+            canvas.enabled = true;
+        else if (canvas.enabled && health == maxHealth)
+            canvas.enabled = false;
     }
 
     void Move()
@@ -145,10 +167,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
         GameObject bullet = PhotonNetwork.Instantiate(missileResourcePath, firePoint.position, Quaternion.LookRotation(turret.transform.forward));
         bullet.GetComponent<Rigidbody>().AddForce(turret.transform.forward * 15.0f, ForceMode.Impulse);
         bullet.GetComponent<Missile>().bounces = missileBounces;
-        // TODO: delete and use line above //
-        //GameObject bullet = Instantiate((GameObject)Resources.Load(missileResourcePath), firePoint.position, Quaternion.LookRotation(turret.transform.forward));
-        //bullet.GetComponent<Rigidbody>().AddForce(turret.transform.forward * 15.0f, ForceMode.Impulse);
-        //bullet.GetComponent<Missile>().bounces = missileBounces;
 
         lastShot = 0;
         shoot = false;
@@ -160,9 +178,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
         if (!PV.IsMine)
             return;
-
-        //rb.angularVelocity = Vector3.zero;
-        //rb.velocity = Vector3.zero;
 
         Move();
         Turn();
@@ -211,5 +226,22 @@ public class PlayerController : MonoBehaviourPunCallbacks
             default:
                 break;
         }
+    }
+
+    // Bullet Collisions
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.gameObject.tag == "Missile")
+        {
+            health -= collision.collider.gameObject.GetComponent<Missile>().damage;
+
+            if (health <= 0)
+                Die();
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("IM DEAD");
     }
 }
