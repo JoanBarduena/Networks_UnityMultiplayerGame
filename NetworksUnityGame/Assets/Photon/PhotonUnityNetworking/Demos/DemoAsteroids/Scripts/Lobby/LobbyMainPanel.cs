@@ -223,7 +223,14 @@ namespace Photon.Pun.Demo.Asteroids
 
             byte maxPlayers;
             byte.TryParse(MaxPlayersInputField.text, out maxPlayers);
-            maxPlayers = (byte) Mathf.Clamp(maxPlayers, 2, 4);
+
+            if (maxPlayers > 4 || maxPlayers < 2)
+            {
+                GameObject.Find("InvalidMaxPlayers").GetComponent<Text>().enabled = true;
+                return;
+            }
+           else
+                GameObject.Find("InvalidMaxPlayers").GetComponent<Text>().enabled = false;
 
             RoomOptions options = new RoomOptions {MaxPlayers = maxPlayers, PlayerTtl = 10000 };
 
