@@ -98,6 +98,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         movementAxisName = "Vertical";
         turnAxisName = "Horizontal";
         canvas.enabled = false;
+
+        PV.Owner.TagObject = gameObject;
     }
 
     // Update is called once per frame
@@ -239,13 +241,28 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             health -= collision.collider.gameObject.GetComponent<Missile>().damage;
 
             if (health <= 0)
-                Die();
+                Die(collision.collider.gameObject.GetComponent<PhotonView>().OwnerActorNr);
         }
     }
 
-    void Die()
+    void Die(int killer)
     {
-        Debug.Log("IM DEAD");
+        if (killer == PhotonNetwork.LocalPlayer.ActorNumber && PhotonNetwork.PlayerList.Length > 1) //suicide
+            killer = PhotonNetwork.LocalPlayer.GetNext().ActorNumber; //follow next player
+
+        GameObject player = PhotonNetwork.CurrentRoom.GetPlayer(killer).TagObject as GameObject; //get killer
+        Camera.main.GetComponent<FollowCamera>().target = player.transform; //follow killer
+        Camera.main.GetComponent<FollowCamera>().distance += 10; //set new camera pos
+
+        //show exit button
+        GameObject exit = GameObject.Find("Exit");
+        exit.GetComponent<Image>().enabled = true;
+        exit.GetComponent<Button>().enabled = true;
+        exit.GetComponentInChildren<Text>().enabled = true;
+
+        //hide aim mark and destroy tank
+        GameObject.Find("AimMark").GetComponent<MeshRenderer>().enabled = false;
+        PhotonNetwork.Destroy(gameObject);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
