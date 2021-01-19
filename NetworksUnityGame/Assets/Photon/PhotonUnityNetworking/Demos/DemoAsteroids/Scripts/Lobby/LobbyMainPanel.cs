@@ -105,9 +105,10 @@ namespace Photon.Pun.Demo.Asteroids
 
         public override void OnJoinedRoom()
         {
+            GameObject.Find("PlayersCount").GetComponent<Text>().enabled = true;
+
             // joining (or entering) a room invalidates any cached lobby room list (even if LeaveLobby was not called due to just joining a room)
             cachedRoomList.Clear();
-
 
             SetActivePanel(InsideRoomPanel.name);
 
@@ -143,6 +144,8 @@ namespace Photon.Pun.Demo.Asteroids
 
         public override void OnLeftRoom()
         {
+            GameObject.Find("PlayersCount").GetComponent<Text>().enabled = false;
+
             SetActivePanel(SelectionPanel.name);
 
             foreach (GameObject entry in playerListEntries.Values)
@@ -276,6 +279,9 @@ namespace Photon.Pun.Demo.Asteroids
 
         public void OnStartGameButtonClicked()
         {
+            if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
+                return;
+            
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
@@ -286,7 +292,7 @@ namespace Photon.Pun.Demo.Asteroids
 
         private bool CheckPlayersReady()
         {
-            if (!PhotonNetwork.IsMasterClient)
+            if (!PhotonNetwork.IsMasterClient || PhotonNetwork.CurrentRoom.PlayerCount < 2)
             {
                 return false;
             }
