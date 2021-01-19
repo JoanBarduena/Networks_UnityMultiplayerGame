@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     Transform firePoint;
 
     GameObject AimMark;
+    GameObject GM;
 
     public TankColor tankColor;
     private string missileResourcePath = "PhotonPrefabs/Tanks/Missiles/Missile";
@@ -63,6 +64,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         turret = transform.Find("Turret").gameObject;
         firePoint = turret.transform.GetChild(0).transform.Find("FirePoint");
         AimMark = GameObject.Find("AimMark");
+        
 
         miniTanksList = new List<GameObject>();
 
@@ -98,6 +100,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         movementAxisName = "Vertical";
         turnAxisName = "Horizontal";
         canvas.enabled = false;
+
+        GM = GameObject.Find("GameManager(Clone)");
 
         PV.Owner.TagObject = gameObject;
     }
@@ -258,32 +262,40 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             name = PhotonNetwork.CurrentRoom.GetPlayer(killer).NickName;
         }
 
-        //PopUp kill
-        GameObject popup = GameObject.Find("PopUpKill");
-        popup.GetComponent<Image>().enabled = true;
-        popup.GetComponentInChildren<Text>().enabled = true;
-        popup.GetComponentInChildren<Text>().text = "You were killed by " + name;
+        if(GM.GetComponent<GameManager>().ReturnPlayersLeft() > 2)
+        {
+            //PopUp kill
+            GameObject popup = GameObject.Find("PopUpKill");
+            popup.GetComponent<Image>().enabled = true;
+            popup.GetComponentInChildren<Text>().enabled = true;
+            popup.GetComponentInChildren<Text>().text = "You were killed by " + name;
 
-        //show spectate button
-        GameObject spectate = GameObject.Find("Spectate");
-        spectate.GetComponent<Image>().enabled = true;
-        spectate.GetComponent<Button>().enabled = true;
-        spectate.GetComponentInChildren<Text>().enabled = true;
+            //show spectate button
+            GameObject spectate = GameObject.Find("Spectate");
+            spectate.GetComponent<Image>().enabled = true;
+            spectate.GetComponent<Button>().enabled = true;
+            spectate.GetComponentInChildren<Text>().enabled = true;
 
-        //show exit button
-        GameObject exit = GameObject.Find("Exit");
-        exit.GetComponent<Image>().enabled = true;
-        exit.GetComponent<Button>().enabled = true;
-        exit.GetComponentInChildren<Text>().enabled = true;
+            //show exit button
+            GameObject exit = GameObject.Find("Exit");
+            exit.GetComponent<Image>().enabled = true;
+            exit.GetComponent<Button>().enabled = true;
+            exit.GetComponentInChildren<Text>().enabled = true;
+        }
+
+        //Notify game manager you died
+        GM.GetComponent<GameManager>().OnPlayerDeath(PhotonNetwork.LocalPlayer.ActorNumber);
 
         //Camera follow killer
         GameObject player = PhotonNetwork.CurrentRoom.GetPlayer(killer).TagObject as GameObject; //get killer
         Camera.main.GetComponent<FollowCamera>().target = player.transform; //follow killer
         Camera.main.GetComponent<FollowCamera>().distance += 10; //set new camera pos
 
-        //hide aim mark and destroy tank
+        //hide aim mark and destroy tank -- LAST THING TO DO
         GameObject.Find("AimMark").GetComponent<MeshRenderer>().enabled = false;
         PhotonNetwork.Destroy(gameObject);
+
+      
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
