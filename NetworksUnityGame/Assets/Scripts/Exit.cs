@@ -22,4 +22,10 @@ public class Exit : MonoBehaviour
     {
         PhotonNetwork.LeaveRoom();
     }
+
+    public void ClosePopUp()
+    {
+        GameObject.Find("PopUpKill").SetActive(false); 
+        GameObject.Find("Spectate").SetActive(false);
+    }
 }

@@ -247,18 +247,39 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     void Die(int killer)
     {
+        string name;
         if (killer == PhotonNetwork.LocalPlayer.ActorNumber && PhotonNetwork.PlayerList.Length > 1) //suicide
+        {
+            name = "yourself";
             killer = PhotonNetwork.LocalPlayer.GetNext().ActorNumber; //follow next player
+        }
+        else
+        {
+            name = PhotonNetwork.CurrentRoom.GetPlayer(killer).NickName;
+        }
 
-        GameObject player = PhotonNetwork.CurrentRoom.GetPlayer(killer).TagObject as GameObject; //get killer
-        Camera.main.GetComponent<FollowCamera>().target = player.transform; //follow killer
-        Camera.main.GetComponent<FollowCamera>().distance += 10; //set new camera pos
+        //PopUp kill
+        GameObject popup = GameObject.Find("PopUpKill");
+        popup.GetComponent<Image>().enabled = true;
+        popup.GetComponentInChildren<Text>().enabled = true;
+        popup.GetComponentInChildren<Text>().text = "You were killed by " + name;
+
+        //show spectate button
+        GameObject spectate = GameObject.Find("Spectate");
+        spectate.GetComponent<Image>().enabled = true;
+        spectate.GetComponent<Button>().enabled = true;
+        spectate.GetComponentInChildren<Text>().enabled = true;
 
         //show exit button
         GameObject exit = GameObject.Find("Exit");
         exit.GetComponent<Image>().enabled = true;
         exit.GetComponent<Button>().enabled = true;
         exit.GetComponentInChildren<Text>().enabled = true;
+
+        //Camera follow killer
+        GameObject player = PhotonNetwork.CurrentRoom.GetPlayer(killer).TagObject as GameObject; //get killer
+        Camera.main.GetComponent<FollowCamera>().target = player.transform; //follow killer
+        Camera.main.GetComponent<FollowCamera>().distance += 10; //set new camera pos
 
         //hide aim mark and destroy tank
         GameObject.Find("AimMark").GetComponent<MeshRenderer>().enabled = false;
