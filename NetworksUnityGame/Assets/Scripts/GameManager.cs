@@ -12,20 +12,32 @@ public class GameManager : MonoBehaviour, IPunObservable
 
     [SerializeField] bool[] players_alive = { false, false, false, false };
 
+    GameObject PlayersIcon;
+    Text PlayersText;
+
     // Start is called before the first frame update
     void Start()
     {
+        PlayersIcon = GameObject.Find("PlayersIcon");
         PlayersRemaining = PhotonNetwork.PlayerList.Length;
 
         for(int i = 0; i < PlayersRemaining; i++)
         {
             players_alive[i] = true;
         }
+
+        PlayersText = PlayersIcon.GetComponentInChildren<Text>();
+        PlayersText.text = PlayersRemaining.ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (PlayersText.text != PlayersRemaining.ToString())
+            PlayersText.text = PlayersRemaining.ToString();
+
+
         if (PlayersRemaining == 1 && !win)
         {
             //Select winner 
