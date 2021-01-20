@@ -262,7 +262,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             name = PhotonNetwork.CurrentRoom.GetPlayer(killer).NickName;
         }
 
-        if(GM.GetComponent<GameManager>().ReturnPlayersLeft() > 2)
+        if(GM.GetComponent<GameManager>().ReturnPlayersLeft() > 1) //TODO: Here goes a 2, set to 1 for tests 
         {
             //PopUp kill
             GameObject popup = GameObject.Find("PopUpKill");

@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour, IPunObservable
         if (PlayersText.text != PlayersRemaining.ToString())
             PlayersText.text = PlayersRemaining.ToString();
 
-
+        /* //TODO: UNCOMMENT, like this for testing
         if (PlayersRemaining == 1 && !win)
         {
             //Select winner 
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour, IPunObservable
             WinUI.GetComponentInChildren<Text>().text = winner_name + " has won the game!";
 
             win = true;
-        }
+        }*/
     }
 
     public void OnPlayerDeath(int player_num)
