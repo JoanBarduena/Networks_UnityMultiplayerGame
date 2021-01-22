@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class GameManager : MonoBehaviour, IPunObservable
+public class GameManager : MonoBehaviourPun, IPunObservable
 {
     public int PlayersRemaining = 0;
     int winner = 0;
@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour, IPunObservable
 
     public void OnPlayerDeath(int player_num)
     {
+        this.photonView.RequestOwnership();
         PlayersRemaining--;
         players_alive[player_num - 1] = false;
     }

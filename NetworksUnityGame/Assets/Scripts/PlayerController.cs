@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         turnAxisName = "Horizontal";
         canvas.enabled = false;
 
-        GM = GameObject.Find("GameManager(Clone)");
+        
 
         PV.Owner.TagObject = gameObject;
     }
@@ -112,6 +112,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     // Update is called once per frame
     void Update()
     {
+        if(GM == null)
+            GM = GameObject.Find("GameManager(Clone)");
+
         movementInputValue = Input.GetAxis(movementAxisName);
         turnInputValue = Input.GetAxis(turnAxisName);
 

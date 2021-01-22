@@ -203,7 +203,7 @@ Transform:
   m_GameObject: {fileID: 5985635242797725129}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 21.782898, y: 0, z: -26.747381}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_Children:
   - {fileID: 1194182074428244375}
   m_Father: {fileID: 0}
@@ -286,7 +286,7 @@ MonoBehaviour:
   prefixField: -1
   observableSearch: 0
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 1
   ObservedComponents:
   - {fileID: 3446987862717820509}
   viewIdField: 0
