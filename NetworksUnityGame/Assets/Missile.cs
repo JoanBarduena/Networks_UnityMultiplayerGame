@@ -29,7 +29,7 @@ public class Missile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (bounces > 0 && collision.collider.gameObject.tag != "Tank")
+        if (bounces > 0 && collision.collider.gameObject.tag != "Tank" && collision.collider.gameObject.tag != "Box")
         {
             bounces--;
             return;
