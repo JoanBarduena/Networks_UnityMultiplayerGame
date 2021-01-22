@@ -115,8 +115,17 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         if(GM == null)
             GM = GameObject.Find("GameManager(Clone)");
 
-        movementInputValue = Input.GetAxis(movementAxisName);
-        turnInputValue = Input.GetAxis(turnAxisName);
+        if(GM.GetComponent<GameManager>().GameStarted())
+        {
+            // Disabling inputs while starting game
+            movementInputValue = Input.GetAxis(movementAxisName);
+            turnInputValue = Input.GetAxis(turnAxisName);
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                shoot = true;
+            }
+        }
 
         // Aiming
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -127,11 +136,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             aimPoint = new Vector3(hit.point.x, 0.1f, hit.point.z);
             Debug.DrawLine(turret.transform.position, aimPoint, Color.red);
             AimMark.transform.position = aimPoint;
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            shoot = true;
         }
 
         HandleHealthBar();

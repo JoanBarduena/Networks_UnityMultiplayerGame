@@ -6,18 +6,26 @@ using Photon.Pun;
 
 public class GameManager : MonoBehaviourPun, IPunObservable
 {
-    public int PlayersRemaining = 0;
     int winner = 0;
     bool win = false;
 
     [SerializeField] bool[] players_alive = { false, false, false, false };
+    public int PlayersRemaining = 0;
+
+    [SerializeField] bool CountDown = true;
+    double StartTime = 0;
 
     GameObject PlayersIcon;
     Text PlayersText;
+    GameObject CD_Text;
 
     // Start is called before the first frame update
     void Start()
     {
+        StartTime = PhotonNetwork.Time;
+
+        CD_Text = GameObject.Find("CountDownText");
+
         PlayersIcon = GameObject.Find("PlayersIcon");
         PlayersRemaining = PhotonNetwork.PlayerList.Length;
 
@@ -33,6 +41,23 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     // Update is called once per frame
     void Update()
     {
+        double time = PhotonNetwork.Time - StartTime;
+        if (CountDown)
+        {
+            if (time > 1 && time < 2)
+                CD_Text.GetComponent<Text>().text = "3";
+            else if (time > 2 && time < 3)
+                CD_Text.GetComponent<Text>().text = "2";
+            else if (time > 3 && time < 4)
+                CD_Text.GetComponent<Text>().text = "1";
+            else if (time > 4 && time < 4.5)
+                CD_Text.GetComponent<Text>().text = "GO!";
+            else if(time > 4.5)
+            {
+                CountDown = false;
+                CD_Text.GetComponent<Text>().enabled = false;
+            }
+        }
 
         if (PlayersText.text != PlayersRemaining.ToString())
             PlayersText.text = PlayersRemaining.ToString();
@@ -90,15 +115,22 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         return player;
     }
 
+    public bool GameStarted()
+    {
+        return !CountDown;
+    }
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
+            //stream.SendNext(CountDown);
             stream.SendNext(players_alive);
             stream.SendNext(PlayersRemaining);
         }
         else
         {
+            //CountDown = (bool)stream.ReceiveNext();
             players_alive = (bool[])stream.ReceiveNext();
             PlayersRemaining = (int)stream.ReceiveNext();
         }
