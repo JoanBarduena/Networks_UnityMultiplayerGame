@@ -6,14 +6,6 @@ using Photon.Pun;
 
 public class BoxScript : MonoBehaviourPun, IPunObservable
 {
-    public enum PowerUp 
-    {
-        NONE = 0, 
-        SPEED,
-        FIRERATE,
-        HEALTH
-    }
-
     PhotonView PV;
 
     public Slider hpbar;
@@ -22,7 +14,7 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
     public int max_health = 3;
     [SerializeField] public int current_health;
 
-    public PowerUp powerup = PowerUp.NONE;
+    public PowerUpType powerup;
 
     private void Awake()
     {
@@ -72,22 +64,32 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
         //particles
         //sound effect
 
-        switch (powerup)
+        //SpawnPowerup(powerup);
+        PhotonNetwork.Destroy(gameObject);
+    }
+
+    void SpawnPowerup(PowerUpType type)
+    {
+        switch (type)
         {
-            case PowerUp.NONE:
+            case PowerUpType.SPEED:
+                PhotonNetwork.InstantiateRoomObject("", this.transform.position, Quaternion.identity);
                 break;
-            case PowerUp.SPEED:
-                PhotonNetwork.Instantiate("Prefabs/PowerUp", this.transform.position, Quaternion.identity);
+            case PowerUpType.FIRE_RATE:
+                PhotonNetwork.InstantiateRoomObject("", this.transform.position, Quaternion.identity);
                 break;
-            case PowerUp.FIRERATE:
-                PhotonNetwork.Instantiate("Prefabs/PowerUp", this.transform.position, Quaternion.identity);
+            case PowerUpType.BOUNCES:
+                PhotonNetwork.InstantiateRoomObject("", this.transform.position, Quaternion.identity);
                 break;
-            case PowerUp.HEALTH:
-                PhotonNetwork.Instantiate("Prefabs/PowerUp", this.transform.position, Quaternion.identity);
+            case PowerUpType.HEALTH:
+                PhotonNetwork.InstantiateRoomObject("", this.transform.position, Quaternion.identity);
+                break;
+            case PowerUpType.MINI_TANKS:
+                PhotonNetwork.InstantiateRoomObject("", this.transform.position, Quaternion.identity);
+                break;
+            default:
                 break;
         }
-
-        PhotonNetwork.Destroy(gameObject);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

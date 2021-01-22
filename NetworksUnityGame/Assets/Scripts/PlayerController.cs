@@ -53,6 +53,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     GameObject AimMark;
     GameObject GM;
 
+    public int killer;
+    public GameObject playerKiller;
+
     public TankColor tankColor;
     private string missileResourcePath = "PhotonPrefabs/Tanks/Missiles/Missile";
 
@@ -129,6 +132,24 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         HandleHealthBar();
+
+        // Follow last killer
+        if (playerKiller != null && playerKiller.GetComponent<PlayerController>().health <= 0)
+        {
+            if (playerKiller == gameObject) //you killed your killer
+            {
+                killer = PhotonNetwork.CurrentRoom.GetPlayer(killer).GetNext().ActorNumber; //get killer
+                playerKiller = PhotonNetwork.CurrentRoom.GetPlayer(killer).TagObject as GameObject; //get killer
+            }
+            else
+            {
+                killer = playerKiller.GetComponent<PlayerController>().killer;
+                playerKiller = playerKiller.GetComponent<PlayerController>().playerKiller;
+            }
+
+            Debug.Log("following " + killer);
+            Camera.main.GetComponent<FollowCamera>().target = playerKiller.transform;
+        }
     }
 
     void HandleHealthBar()
@@ -245,11 +266,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             health -= collision.collider.gameObject.GetComponent<Missile>().damage;
 
             if (health <= 0)
-                Die(collision.collider.gameObject.GetComponent<PhotonView>().OwnerActorNr);
+            {
+                killer = collision.collider.gameObject.GetComponent<PhotonView>().OwnerActorNr;
+                Die();
+            }
         }
     }
 
-    void Die(int killer)
+    void Die()
     {
         string name;
         if (killer == PhotonNetwork.LocalPlayer.ActorNumber && PhotonNetwork.PlayerList.Length > 1) //suicide
@@ -287,8 +311,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         GM.GetComponent<GameManager>().OnPlayerDeath(PhotonNetwork.LocalPlayer.ActorNumber);
 
         //Camera follow killer
-        GameObject player = PhotonNetwork.CurrentRoom.GetPlayer(killer).TagObject as GameObject; //get killer
-        Camera.main.GetComponent<FollowCamera>().target = player.transform; //follow killer
+        playerKiller = PhotonNetwork.CurrentRoom.GetPlayer(killer).TagObject as GameObject; //get killer
+        Camera.main.GetComponent<FollowCamera>().target = playerKiller.transform; //follow killer
         Camera.main.GetComponent<FollowCamera>().distance += 10; //set new camera pos
 
         //hide aim mark and destroy tank -- LAST THING TO DO

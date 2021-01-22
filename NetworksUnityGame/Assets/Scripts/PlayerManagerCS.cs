@@ -5,7 +5,6 @@ using Photon.Pun;
 
 public class PlayerManagerCS : MonoBehaviour
 {
-
     PhotonView PV;
 
     private void Awake()
@@ -30,16 +29,8 @@ public class PlayerManagerCS : MonoBehaviour
 
     void CreateController()
     {
-        //var players = PhotonNetwork.CurrentRoom.PlayerCount;
-        //var dict = PhotonNetwork.LocalPlayer.ActorNumber;
-        //for (; i < dict.Length; i++)
-        //{
-        //    if (PV.ViewID == dict[i].ActorNumber)
-        //        break;
-        //}
         int i = PhotonNetwork.LocalPlayer.ActorNumber;
 
-        
         GameObject spawn= GameObject.Find("TankSpawn1");
         switch (i)
         {
@@ -60,15 +51,5 @@ public class PlayerManagerCS : MonoBehaviour
                 break;
         }
         spawn.gameObject.GetComponent<TankSpawner>().SpawnTank(i);
-
-
-
-        //Debug.Log(spawn);
-
-        //    if (spawn)
-        //        spawn.gameObject.GetComponent<TankSpawner>().SpawnTank(1);
-        //    else if (PV.GetInstanceID() == 2)
-        //        GameObject.Find("TankSpawn2").gameObject.GetComponent<TankSpawner>().SpawnTank(2);
-        //
     }
 }

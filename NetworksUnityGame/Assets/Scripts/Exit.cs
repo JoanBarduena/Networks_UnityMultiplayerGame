@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using Photon.Pun;
 
 
-public class Exit : MonoBehaviour
+public class Exit : MonoBehaviourPunCallbacks
 {
     // Start is called before the first frame update
     void Start()
@@ -27,5 +28,10 @@ public class Exit : MonoBehaviour
     {
         GameObject.Find("PopUpKill").SetActive(false); 
         GameObject.Find("Spectate").SetActive(false);
+    }
+
+    public override void OnLeftRoom()
+    {
+        SceneManager.LoadScene("LobbyScene");
     }
 }
