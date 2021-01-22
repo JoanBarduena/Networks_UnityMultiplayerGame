@@ -136,23 +136,23 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
         HandleHealthBar();
 
-        // Follow last killer
-        if (playerKiller != null && playerKiller.GetComponent<PlayerController>().health <= 0)
-        {
-            if (playerKiller == gameObject) //you killed your killer
-            {
-                killer = PhotonNetwork.CurrentRoom.GetPlayer(killer).GetNext().ActorNumber; //get killer
-                playerKiller = PhotonNetwork.CurrentRoom.GetPlayer(killer).TagObject as GameObject; //get killer
-            }
-            else
-            {
-                killer = playerKiller.GetComponent<PlayerController>().killer;
-                playerKiller = playerKiller.GetComponent<PlayerController>().playerKiller;
-            }
+        //// Follow last killer
+        //if (playerKiller != null && playerKiller.GetComponent<PlayerController>().health <= 0)
+        //{
+        //    if (playerKiller == gameObject) //you killed your killer
+        //    {
+        //        killer = PhotonNetwork.CurrentRoom.GetPlayer(killer).GetNext().ActorNumber; //get killer
+        //        playerKiller = PhotonNetwork.CurrentRoom.GetPlayer(killer).TagObject as GameObject; //get killer
+        //    }
+        //    else
+        //    {
+        //        killer = playerKiller.GetComponent<PlayerController>().killer;
+        //        playerKiller = playerKiller.GetComponent<PlayerController>().playerKiller;
+        //    }
 
-            Debug.Log("following " + killer);
-            Camera.main.GetComponent<FollowCamera>().target = playerKiller.transform;
-        }
+        //    Debug.Log("following " + killer);
+        //    Camera.main.GetComponent<FollowCamera>().target = playerKiller.transform;
+        //}
     }
 
     void HandleHealthBar()

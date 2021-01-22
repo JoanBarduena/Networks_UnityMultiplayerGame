@@ -74,6 +74,22 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         return PlayersRemaining;
     }
 
+    public GameObject ReturnPlayerAlive() //return alive actor number, -1 if no one alive
+    {
+        GameObject player;
+        int actor_number = -1;
+
+        for (int i = 0; i < PlayersRemaining; i++)
+        {
+            if (players_alive[i] == true)
+                actor_number = i+1;
+        }
+
+        player = PhotonNetwork.CurrentRoom.GetPlayer(actor_number).TagObject as GameObject;
+
+        return player;
+    }
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)

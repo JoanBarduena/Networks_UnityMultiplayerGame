@@ -1,10 +1,13 @@
 ﻿// Smooth Follow from Standard Assets
 // Converted to C# because I fucking hate UnityScript and it's inexistant C# interoperability
 // If you have C# code and you want to edit SmoothFollow's vars ingame, use this instead.
+
 using UnityEngine;
+using Photon.Pun;
 using System.Collections;
 
-public class FollowCamera : MonoBehaviour
+
+public class FollowCamera : MonoBehaviourPun
 {
 
 	// The target we are following
@@ -17,10 +20,22 @@ public class FollowCamera : MonoBehaviour
 	public float heightDamping = 2.0f;
 	public float rotationDamping = 3.0f;
 
+	GameObject GM;
+	GameObject player;
+
 	void LateUpdate()
 	{
+		if(GM == null)
+			GM = GameObject.Find("GameManager(Clone)");
+
 		// Early out if we don't have a target
-		if (!target) return;
+		if (!target)
+        {
+			player = GM.GetComponent<GameManager>().ReturnPlayerAlive();
+
+			if (player)
+				target = player.transform;
+		}
 
 		// Calculate the current rotation angles
 		float wantedRotationAngle = target.eulerAngles.y;
