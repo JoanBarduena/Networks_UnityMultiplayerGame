@@ -25,9 +25,12 @@ public class PowerUp : MonoBehaviour
     float activeTime = 0;
     public float maxActiveTime = 5;
 
+    private Vector3 rotation = new Vector3(0, 0.5f, 0); 
 
     void Update()
     {
+        this.transform.Rotate(rotation); 
+
         if (activated)
         {
             activeTime += Time.deltaTime;
