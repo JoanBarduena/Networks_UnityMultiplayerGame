@@ -14,8 +14,7 @@ public enum TankColor
     NONE
 }
 public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
-{
-
+{ 
     PhotonView PV;
     Rigidbody rb;
 
@@ -59,6 +58,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public TankColor tankColor;
     private string missileResourcePath = "PhotonPrefabs/Tanks/Missiles/Missile";
 
+    private AudioSource audiosource;
+
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -74,6 +75,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         canvas = gameObject.GetComponentInChildren<Canvas>();
         hpbar.maxValue = (int)maxHealth;
         hpbar.value = (int)maxHealth;
+
+        audiosource = GetComponent<AudioSource>(); 
 
         switch (tankColor)
         {
@@ -204,6 +207,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
         lastShot = 0;
         shoot = false;
+    }
+
+    public void ShootSound()
+    {
+        audiosource.PlayOneShot(audiosource.clip);
+        Debug.Log("el PEPE");
     }
 
     void FixedUpdate()

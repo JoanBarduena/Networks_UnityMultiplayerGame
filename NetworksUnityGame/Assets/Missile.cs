@@ -13,18 +13,18 @@ public class Missile : MonoBehaviour
     public static float maxTimeAlive = 6;
 
     // Audio 
-    public AudioSource shotSound;
-    public AudioSource bounceSound;
+    private AudioSource audiosource; 
    
     void Awake()
     {
         explosionParticles = (GameObject)Resources.Load("PhotonPrefabs/Tanks/Missiles/Explosion");
         rb = GetComponent<Rigidbody>();
-    }
 
-    void Start()
-    {
-        shotSound.PlayOneShot(shotSound.clip);
+        audiosource = GetComponent<AudioSource>();
+
+        int num = gameObject.GetPhotonView().OwnerActorNr;
+        GameObject tank = PhotonNetwork.CurrentRoom.GetPlayer(num).TagObject as GameObject;
+        tank.GetComponent<PlayerController>().ShootSound();
     }
 
     // Update is called once per frame
@@ -42,7 +42,7 @@ public class Missile : MonoBehaviour
         if (bounces > 0 && collision.collider.gameObject.tag != "Tank" && collision.collider.gameObject.tag != "Box")
         {
             if(bounces > 1)
-                bounceSound.PlayOneShot(bounceSound.clip);
+                audiosource.PlayOneShot(audiosource.clip);
 
             bounces--;
             return;
