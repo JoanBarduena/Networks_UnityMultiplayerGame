@@ -69,15 +69,13 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
         //sound effect
 
         //PowerUp Drop Chance
-        int r = Random.Range(0, 5); //20%
+        int r = Random.Range(0, 2); //% 0-4?
 
         //SpawnPowerup(powerup);
         if (r == 0)
         {
             SpawnPowerup(powerup);
-            Debug.Log("SPAWN POWERUP");
         }
-
         PhotonNetwork.Destroy(gameObject);
     }
 

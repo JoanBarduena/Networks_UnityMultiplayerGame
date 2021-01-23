@@ -50,7 +50,7 @@ public class PowerUp : MonoBehaviourPun
         // Check if the collided is a tank
         if (other.CompareTag("Tank"))
         {
-            if (photonView.IsMine)
+            if(other.gameObject.GetPhotonView().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber)
             {
                 // Apply powerup
                 player = other.GetComponent<PlayerController>();
@@ -58,10 +58,15 @@ public class PowerUp : MonoBehaviourPun
                 activated = true;
             }
 
-            // Hide the power up in the map
-            GetComponent<MeshRenderer>().enabled = false;
-            GetComponent<BoxCollider>().enabled = false;
-
+            if(gameObject.GetPhotonView().IsMine)
+            {
+                // Hide the power up in the map
+                Vector3 pos = Vector3.zero;
+                pos.y = -10.0f;
+                this.transform.position = pos;
+                Debug.Log("CHANGE POS");
+            }
+            
         }
     }
 }
