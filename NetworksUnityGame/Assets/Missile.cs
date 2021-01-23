@@ -42,7 +42,10 @@ public class Missile : MonoBehaviour
         if (bounces > 0 && collision.collider.gameObject.tag != "Tank" && collision.collider.gameObject.tag != "Box")
         {
             if(bounces > 1)
+            {
                 audiosource.PlayOneShot(audiosource.clip);
+                Debug.Log("Jouseph");
+            }
 
             bounces--;
             return;
