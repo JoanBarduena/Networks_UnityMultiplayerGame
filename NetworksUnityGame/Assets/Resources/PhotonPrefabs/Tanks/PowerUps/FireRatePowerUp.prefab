@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  maxActiveTime: 5
+  maxActiveTime: 10
 --- !u!114 &3886076929948153558
 MonoBehaviour:
   m_ObjectHideFlags: 0
