@@ -11,6 +11,9 @@ public class Missile : MonoBehaviour
     float timeAlive = 0;
 
     public static float maxTimeAlive = 6;
+
+    // Audio 
+    public AudioSource bounceSound; 
     void Awake()
     {
         explosionParticles = (GameObject)Resources.Load("PhotonPrefabs/Tanks/Missiles/Explosion");
@@ -31,6 +34,7 @@ public class Missile : MonoBehaviour
     {
         if (bounces > 0 && collision.collider.gameObject.tag != "Tank" && collision.collider.gameObject.tag != "Box")
         {
+            bounceSound.Play();
             bounces--;
             return;
         }

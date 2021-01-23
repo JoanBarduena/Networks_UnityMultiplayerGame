@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     private float lastShot = 0;
     private float bulletSpawnTime = 6.0f;
     private int missileBounces = 1;
+    public AudioSource shotAudio; 
 
     // PowerUps
     int bouncesIncrease = 1;
@@ -201,6 +202,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         GameObject bullet = PhotonNetwork.Instantiate(missileResourcePath, firePoint.position, Quaternion.LookRotation(turret.transform.forward));
         bullet.GetComponent<Rigidbody>().AddForce(turret.transform.forward * 15.0f, ForceMode.Impulse);
         bullet.GetComponent<Missile>().bounces = missileBounces;
+
+        shotAudio.Play(); 
 
         lastShot = 0;
         shoot = false;
