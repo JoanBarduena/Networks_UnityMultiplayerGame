@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 
 public enum PowerUpType
@@ -13,7 +14,7 @@ public enum PowerUpType
 
     NONE
 }
-public class PowerUp : MonoBehaviour
+public class PowerUp : MonoBehaviourPun
 {
 
     public PowerUpType type;
@@ -39,7 +40,7 @@ public class PowerUp : MonoBehaviour
             {
                 activated = false;
                 player.ApplyPowerUp(type, false);
-                Destroy(gameObject);
+                PhotonNetwork.Destroy(gameObject);
             }
         }
     }
@@ -49,14 +50,17 @@ public class PowerUp : MonoBehaviour
         // Check if the collided is a tank
         if (other.CompareTag("Tank"))
         {
-            // Apply powerup
-            player = other.GetComponent<PlayerController>();
-            player.ApplyPowerUp(type, true);
-            activated = true;
+            if (photonView.IsMine)
+            {
+                // Apply powerup
+                player = other.GetComponent<PlayerController>();
+                player.ApplyPowerUp(type, true);
+                activated = true;
+            }
 
             // Hide the power up in the map
             GetComponent<MeshRenderer>().enabled = false;
-            GetComponent<SphereCollider>().enabled = false;
+            GetComponent<BoxCollider>().enabled = false;
 
         }
     }

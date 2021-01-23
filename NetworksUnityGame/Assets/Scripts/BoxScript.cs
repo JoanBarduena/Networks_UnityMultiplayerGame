@@ -25,7 +25,7 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
         hpbar.maxValue = max_health;
         hpbar.value = max_health;
 
-        powerup = (PowerUpType)Random.Range(0, 4);
+        powerup = (PowerUpType)Random.Range(0, 5);
     }
 
     // Start is called before the first frame update
@@ -69,7 +69,7 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
         //sound effect
 
         //PowerUp Drop Chance
-        int r = Random.Range(0, 4); //20%
+        int r = Random.Range(0, 5); //20%
 
         //SpawnPowerup(powerup);
         if (r == 0)
@@ -83,22 +83,25 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
 
     void SpawnPowerup(PowerUpType type)
     {
+        Vector3 pos = transform.position;
+        pos.y = 0.7f;
+
         switch (type)
         {
             case PowerUpType.SPEED:
-                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/PowerUps/Items_FuelCan_01", this.transform.position, Quaternion.identity);
+                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/PowerUps/Items_FuelCan_01", pos, Quaternion.identity);
                 break;
             case PowerUpType.FIRE_RATE:
-                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/PowerUps/FireRatePowerUp", this.transform.position, Quaternion.identity);
+                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/PowerUps/FireRatePowerUp", pos, Quaternion.identity);
                 break;
             case PowerUpType.BOUNCES:
-                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/PowerUps/FireRatePowerUp", this.transform.position, Quaternion.identity);//needs porp
+                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/PowerUps/BouncePowerUP", pos, Quaternion.identity);
                 break;
             case PowerUpType.HEALTH:
-                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/PowerUps/HealthPowerUp", this.transform.position, Quaternion.identity);
+                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/PowerUps/HealthPowerUp", pos, Quaternion.identity);
                 break;
             case PowerUpType.MINI_TANKS:
-                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/PowerUps/FireRatePowerUp", this.transform.position, Quaternion.identity); //needs prop
+                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/PowerUps/TankMiniPowerUp", pos, Quaternion.identity);
                 break;
             default:
                 break;

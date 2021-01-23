@@ -225,15 +225,16 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         {
             Vector3 pos = transform.position;
             pos.z += 5;
-            miniTanksList.Add(Instantiate((GameObject)Resources.Load("PhotonPrefabs/Tanks/TankMini"), pos, Quaternion.identity));
+            miniTanksList.Add(PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankMini", pos, Quaternion.identity));
             pos.z -= 10;
-            miniTanksList.Add(Instantiate((GameObject)Resources.Load("PhotonPrefabs/Tanks/TankMini"), pos, Quaternion.identity));
+            miniTanksList.Add(PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankMini", pos, Quaternion.identity));
+            //miniTanksList.Add(Instantiate((GameObject)Resources.Load("PhotonPrefabs/Tanks/TankMini"), pos, Quaternion.identity));
         }
         else
         {
             foreach (GameObject obj in miniTanksList)
             {
-                Destroy(obj);
+                PhotonNetwork.Destroy(obj);
             }
         }
     }
