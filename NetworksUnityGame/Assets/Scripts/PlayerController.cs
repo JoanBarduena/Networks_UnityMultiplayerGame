@@ -143,6 +143,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
         HandleHealthBar();
 
+        if (GM.GetComponent<GameManager>().GameEnded())
+            PhotonNetwork.Destroy(gameObject);
+
         //// Follow last killer
         //if (playerKiller != null && playerKiller.GetComponent<PlayerController>().health <= 0)
         //{
@@ -303,7 +306,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             name = PhotonNetwork.CurrentRoom.GetPlayer(killer).NickName;
         }
 
-        if(GM.GetComponent<GameManager>().ReturnPlayersLeft() > 1) //TODO: Here goes a 2, set to 1 for tests 
+        if(GM.GetComponent<GameManager>().ReturnPlayersLeft() > 2) //TODO: Here goes a 2, set to 1 for tests 
         {
             //PopUp kill
             GameObject popup = GameObject.Find("PopUpKill");

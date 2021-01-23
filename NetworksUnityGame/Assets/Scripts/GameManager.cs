@@ -2,22 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
 
 public class GameManager : MonoBehaviourPun, IPunObservable
 {
     int winner = 0;
     bool win = false;
+    bool change_sceen = false;
 
     [SerializeField] bool[] players_alive = { false, false, false, false };
     public int PlayersRemaining = 0;
 
     [SerializeField] bool CountDown = true;
     double StartTime = 0;
+    double WinTime = 0;
 
     GameObject PlayersIcon;
     Text PlayersText;
     GameObject CD_Text;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -62,7 +67,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         if (PlayersText.text != PlayersRemaining.ToString())
             PlayersText.text = PlayersRemaining.ToString();
 
-        /* //TODO: UNCOMMENT, like this for testing
+       
         if (PlayersRemaining == 1 && !win)
         {
             //Select winner 
@@ -84,7 +89,27 @@ public class GameManager : MonoBehaviourPun, IPunObservable
             WinUI.GetComponentInChildren<Text>().text = winner_name + " has won the game!";
 
             win = true;
-        }*/
+            WinTime = PhotonNetwork.Time;
+        }
+
+        if(win)
+        {
+            if (PhotonNetwork.IsMasterClient /*&& all players accept rematch*/)
+            {
+                if (PhotonNetwork.Time - WinTime > 2 && !change_sceen)
+                {
+                    change_sceen = true;
+                    this.photonView.RPC("WinScreen", RpcTarget.All);
+                }
+                    
+            }
+        }
+    }
+
+    [PunRPC]
+    void WinScreen()
+    {
+        PhotonNetwork.LoadLevel("WinScreen");
     }
 
     public void OnPlayerDeath(int player_num)
@@ -118,6 +143,11 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     public bool GameStarted()
     {
         return !CountDown;
+    }
+
+    public bool GameEnded()
+    {
+        return win;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
