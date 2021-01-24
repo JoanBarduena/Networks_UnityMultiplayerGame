@@ -28,13 +28,6 @@ public class PowerUp : MonoBehaviourPun
 
     private Vector3 rotation = new Vector3(0, 0.5f, 0);
 
-    private AudioSource audiosource;
-
-    void Awake()
-    {
-        audiosource = GetComponent<AudioSource>();
-    }
-
     void Update()
     {
         this.transform.Rotate(rotation); 
@@ -57,12 +50,11 @@ public class PowerUp : MonoBehaviourPun
         // Check if the collided is a tank
         if (other.CompareTag("Tank"))
         {
-            audiosource.PlayOneShot(audiosource.clip);
-
             if (other.gameObject.GetPhotonView().OwnerActorNr == PhotonNetwork.LocalPlayer.ActorNumber)
             {
                 // Apply powerup
                 player = other.GetComponent<PlayerController>();
+                player.PowerUpSound();
                 player.ApplyPowerUp(type, true);
                 activated = true;
             }

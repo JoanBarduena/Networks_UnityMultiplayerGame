@@ -23,6 +23,8 @@ MonoBehaviour:
   shotsound: {fileID: 0}
   idlesound: {fileID: 0}
   movingsound: {fileID: 0}
+  powerupsound: {fileID: 0}
+  losePrefab: {fileID: 0}
   target: {fileID: 0}
 --- !u!195 &695645913
 NavMeshAgent:

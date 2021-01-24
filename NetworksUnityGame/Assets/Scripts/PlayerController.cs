@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public AudioSource shotsound;
     public AudioSource idlesound;
     public AudioSource movingsound;
+    public AudioSource powerupsound;
     bool is_moving = false;
     bool is_idle = false;
     private string explosionPrefabPath = "PhotonPrefabs/Tanks/ExplosionSpawn";
@@ -86,6 +87,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         shotsound = audios[0];
         idlesound = audios[1];
         movingsound = audios[2];
+        powerupsound = audios[3];
 
         switch (tankColor)
         {
@@ -115,8 +117,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         movementAxisName = "Vertical";
         turnAxisName = "Horizontal";
         canvas.enabled = false;
-
-        
 
         PV.Owner.TagObject = gameObject;
     }
@@ -221,6 +221,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public void ShootSound()
     {
         shotsound.PlayOneShot(shotsound.clip);
+    }
+
+    public void PowerUpSound()
+    {
+        powerupsound.PlayOneShot(powerupsound.clip);
     }
 
     void FixedUpdate()
