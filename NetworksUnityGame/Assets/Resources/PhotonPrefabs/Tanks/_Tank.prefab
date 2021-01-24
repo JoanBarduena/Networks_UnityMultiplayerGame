@@ -479,6 +479,8 @@ MonoBehaviour:
   shotsound: {fileID: -7916929630461765605}
   idlesound: {fileID: 7653772565176706531}
   movingsound: {fileID: -3922687744588095655}
+  losePrefab: {fileID: 1874161046507234694, guid: 5d6b61a1c93624b4db19d7ce9b261bea,
+    type: 3}
 --- !u!54 &-5143725784721353386
 Rigidbody:
   m_ObjectHideFlags: 0

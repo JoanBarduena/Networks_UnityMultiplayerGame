@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     bool is_moving = false;
     bool is_idle = false;
     private string explosionPrefabPath = "PhotonPrefabs/Tanks/ExplosionSpawn";
+    public GameObject losePrefab; 
 
     private void Awake()
     {
@@ -199,10 +200,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         }
         else if (movementInputValue == 0 && !is_idle)
         {
+            movingsound.Stop();
             is_moving = false;
             is_idle = true;
-            idlesound.Play();
-            movingsound.Stop();
+            idlesound.Play();   
         } 
     }
 
@@ -352,9 +353,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         //Notify game manager you died
         GM.GetComponent<GameManager>().OnPlayerDeath(PhotonNetwork.LocalPlayer.ActorNumber);
 
+        //Explosion sound (on all clients)
         GameObject explosion = PhotonNetwork.Instantiate(explosionPrefabPath, this.transform.position, Quaternion.identity);
         AudioSource explosionSound = explosion.GetComponent<AudioSource>();
         explosionSound.PlayOneShot(explosionSound.clip);
+
+        //Defeat sound (only on loser client)
+        GameObject lose = Instantiate(losePrefab, this.transform.position, Quaternion.identity);
+        AudioSource defeatSound = lose.GetComponent<AudioSource>();
+        defeatSound.PlayDelayed(1.0f); 
 
         //Camera follow killer
         playerKiller = PhotonNetwork.CurrentRoom.GetPlayer(killer).TagObject as GameObject; //get killer
