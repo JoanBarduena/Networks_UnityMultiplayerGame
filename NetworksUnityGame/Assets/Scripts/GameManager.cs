@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     bool win = false;
     bool change_sceen = false;
 
-    [SerializeField] bool[] players_alive = { false, false, false, false };
+    [SerializeField] public bool[] players_alive = { false, false, false, false };
     public int PlayersRemaining = 0;
 
     [SerializeField] bool CountDown = true;
@@ -142,6 +142,11 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         player = PhotonNetwork.CurrentRoom.GetPlayer(actor_number).TagObject as GameObject;
 
         return player;
+    }
+
+    public bool IsPlayerAlive(int actor_number)
+    {
+        return players_alive[actor_number - 1] == true;
     }
 
     public bool GameStarted()

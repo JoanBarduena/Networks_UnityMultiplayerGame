@@ -7,6 +7,12 @@ public class PlayerManagerCS : MonoBehaviour
 {
     PhotonView PV;
 
+    GameManager GM;
+
+    public bool dead = false;
+    public int killer;
+    int pos = -1;
+
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -24,7 +30,53 @@ public class PlayerManagerCS : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (GM == null)
+            GM = GameObject.Find("GameManager(Clone)").GetComponent<GameManager>();
+
+        // Spectate
+        if (dead)
+        {
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                killer++;
+                if (killer > 4)
+                    killer = 1;
+
+                int start = killer;
+                while (GM.IsPlayerAlive(killer) == false) //alive
+                {
+                    killer++;
+                    if (killer > 4)
+                        killer = 1;
+
+                    if (killer == start) //full cycle
+                        return;
+                }
+                Debug.Log(start + "-" + killer);
+                GameObject player = PhotonNetwork.CurrentRoom.GetPlayer(PhotonNetwork.CurrentRoom.GetPlayer(killer).ActorNumber).TagObject as GameObject;
+                Camera.main.GetComponent<FollowCamera>().target = player.transform;
+            }
+            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                killer--;
+                if (killer < 1)
+                    killer = 4;
+
+                int start = killer;
+                while (GM.IsPlayerAlive(killer) == false) //alive
+                {
+                    killer--;
+                    if (killer < 1)
+                        killer = 4;
+
+                    if (killer == start) //full cycle
+                        return;
+                }
+                Debug.Log(start + "-" + killer);
+                GameObject player = PhotonNetwork.CurrentRoom.GetPlayer(PhotonNetwork.CurrentRoom.GetPlayer(killer).ActorNumber).TagObject as GameObject;
+                Camera.main.GetComponent<FollowCamera>().target = player.transform;
+            }
+        }
     }
 
     void CreateController()

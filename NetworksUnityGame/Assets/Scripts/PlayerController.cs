@@ -154,24 +154,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
         if (GM.GetComponent<GameManager>().GameEnded())
             PhotonNetwork.Destroy(gameObject);
-
-        //// Follow last killer
-        //if (playerKiller != null && playerKiller.GetComponent<PlayerController>().health <= 0)
-        //{
-        //    if (playerKiller == gameObject) //you killed your killer
-        //    {
-        //        killer = PhotonNetwork.CurrentRoom.GetPlayer(killer).GetNext().ActorNumber; //get killer
-        //        playerKiller = PhotonNetwork.CurrentRoom.GetPlayer(killer).TagObject as GameObject; //get killer
-        //    }
-        //    else
-        //    {
-        //        killer = playerKiller.GetComponent<PlayerController>().killer;
-        //        playerKiller = playerKiller.GetComponent<PlayerController>().playerKiller;
-        //    }
-
-        //    Debug.Log("following " + killer);
-        //    Camera.main.GetComponent<FollowCamera>().target = playerKiller.transform;
-        //}
     }
 
     void HandleHealthBar()
@@ -328,8 +310,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         {
             name = PhotonNetwork.CurrentRoom.GetPlayer(killer).NickName;
         }
+        GameObject.Find("PlayerManager(Clone)").GetComponent<PlayerManagerCS>().dead = true;
+        GameObject.Find("PlayerManager(Clone)").GetComponent<PlayerManagerCS>().killer = killer;
 
-        if(GM.GetComponent<GameManager>().ReturnPlayersLeft() > 2) //TODO: Here goes a 2, set to 1 for tests 
+        if (GM.GetComponent<GameManager>().ReturnPlayersLeft() > 2) //TODO: Here goes a 2, set to 1 for tests 
         {
             //PopUp kill
             GameObject popup = GameObject.Find("PopUpKill");
