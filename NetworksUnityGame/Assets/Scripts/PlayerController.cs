@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Debug.DrawLine(ray.origin, ray.origin + ray.direction * 50, Color.red);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 500))
+        if (Physics.Raycast(ray, out hit, 500, LayerMask.GetMask("Floor")))
         {
             aimPoint = new Vector3(hit.point.x, 0.1f, hit.point.z);
             Debug.DrawLine(turret.transform.position, aimPoint, Color.red);
@@ -151,9 +151,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         HandleHealthBar();
-
-        if (GM.GetComponent<GameManager>().GameEnded())
-            PhotonNetwork.Destroy(gameObject);
     }
 
     void HandleHealthBar()
@@ -344,8 +341,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
         //Explosion sound (on all clients)
         GameObject explosion = PhotonNetwork.Instantiate(explosionPrefabPath, this.transform.position, Quaternion.identity);
-        AudioSource explosionSound = explosion.GetComponent<AudioSource>();
-        explosionSound.PlayOneShot(explosionSound.clip);
 
         //Defeat sound (only on loser client)
         GameObject lose = Instantiate(losePrefab, this.transform.position, Quaternion.identity);
