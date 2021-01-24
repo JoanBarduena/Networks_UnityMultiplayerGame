@@ -70,7 +70,7 @@ PrefabInstance:
     - target: {fileID: 8221299093771231549, guid: 9fe3fe424868ac944b766e61904b0663,
         type: 3}
       propertyPath: m_Name
-      value: MissileYellow Variant
+      value: MissileYellow
       objectReference: {fileID: 0}
     - target: {fileID: 8985022019210014687, guid: 9fe3fe424868ac944b766e61904b0663,
         type: 3}

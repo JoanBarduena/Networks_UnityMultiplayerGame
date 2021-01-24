@@ -40,6 +40,11 @@ public class RoomManager : MonoBehaviourPunCallbacks
             PhotonNetwork.Instantiate("PhotonPrefabs/PlayerManager", Vector3.zero, Quaternion.identity);
             PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/GameManager", Vector3.zero, Quaternion.identity);
         }
+        else if (scene.buildIndex == 2)
+        {
+            PhotonNetwork.InstantiateRoomObject("PhotonPrefabs/WinScreenManager", Vector3.zero, Quaternion.identity);
+        }
+
     }
 
     // Start is called before the first frame update
