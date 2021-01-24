@@ -1,7 +1,7 @@
 ﻿using Photon.Pun;
 using UnityEngine;
 
-public class Missile : MonoBehaviour
+public class Missile : MonoBehaviourPun
 {
     Rigidbody rb;
     GameObject explosionParticles;
@@ -41,11 +41,12 @@ public class Missile : MonoBehaviour
     {
         if (bounces > 0 && collision.collider.gameObject.tag != "Tank" && collision.collider.gameObject.tag != "Box")
         {
-            if(bounces > 1)
+            if((bounces > 1 && !photonView.IsMine) || (bounces > 0 && photonView.IsMine))
             {
                 audiosource.PlayOneShot(audiosource.clip);
-                Debug.Log("Jouseph");
             }
+
+
 
             bounces--;
             return;
