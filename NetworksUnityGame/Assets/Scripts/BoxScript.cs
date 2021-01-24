@@ -15,6 +15,7 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
     [SerializeField] public int current_health;
 
     public PowerUpType powerup;
+    private string BoxSoundPrefabPath = "Map/BoxSound";
 
     private void Awake()
     {
@@ -67,6 +68,9 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
             return;
         //particles
         //sound effect
+        GameObject boxDestoyed = PhotonNetwork.Instantiate(BoxSoundPrefabPath, gameObject.transform.position, Quaternion.identity);
+        AudioSource boxSound = boxDestoyed.GetComponent<AudioSource>();
+        boxSound.PlayOneShot(boxSound.clip);
 
         //PowerUp Drop Chance
         int r = Random.Range(0, 2); //% 0-4?
