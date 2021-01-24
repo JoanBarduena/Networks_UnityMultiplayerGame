@@ -8,6 +8,8 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public static RoomManager instance;
 
+    public int winner = 0;
+
     private void Awake()
     {
         if (instance)

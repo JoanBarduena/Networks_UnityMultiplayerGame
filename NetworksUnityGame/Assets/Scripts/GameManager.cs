@@ -94,6 +94,10 @@ public class GameManager : MonoBehaviourPun, IPunObservable
 
         if(win)
         {
+
+            GameObject room = GameObject.Find("RoomManager");
+            room.GetComponent<RoomManager>().winner = winner;
+
             if (PhotonNetwork.IsMasterClient /*&& all players accept rematch*/)
             {
                 if (PhotonNetwork.Time - WinTime > 2 && !change_sceen)
