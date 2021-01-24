@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Players_rematch: 00000000
+  RoomPlayers: 00000000
   Players_connected: 0
 --- !u!114 &3344995271246484068
 MonoBehaviour:

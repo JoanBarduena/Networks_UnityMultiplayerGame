@@ -14,18 +14,28 @@ public class WinScene : MonoBehaviourPun, IPunObservable
     bool loading = false;
 
     [SerializeField] bool[] Players_rematch = { false, false, false, false };
+    public bool[] RoomPlayers = { false, false, false, false };
+
+    int players_connected_start = 0;
     public int Players_connected = 0;
+
+    Text accepted_players;
 
     private void Awake()
     {
         StartedTime = PhotonNetwork.Time;
-        
     }
 
     // Start is called before the first frame update
     void Start()
     {
         Players_connected = PhotonNetwork.PlayerList.Length;
+        players_connected_start = PhotonNetwork.PlayerList.Length;
+
+        for (int i = 0; i < Players_connected; i++)
+        {
+            RoomPlayers[i] = true;
+        }
 
         GameObject room = GameObject.Find("RoomManager");
         winner = room.GetComponent<RoomManager>().winner;
@@ -34,6 +44,8 @@ public class WinScene : MonoBehaviourPun, IPunObservable
         GameObject text_name = GameObject.Find("Name");
         text_name.GetComponent<Text>().text = winner_name;
 
+        GameObject accpt_name = GameObject.Find("AcceptedPlayers");
+        accepted_players = accpt_name.GetComponent<Text>();
 
         GameObject tank = GetWinnerTank(winner);
         Vector3 pos = Vector3.zero;
@@ -49,7 +61,30 @@ public class WinScene : MonoBehaviourPun, IPunObservable
     {
         double time = PhotonNetwork.Time - StartedTime;
 
-        if (AllPlayersRematch() && PhotonNetwork.IsMasterClient && !loading)
+        if(PhotonNetwork.CurrentRoom.PlayerCount != Players_connected)
+        {
+
+            for (int i = 0; i < Players_connected; i++)
+                RoomPlayers[i] = false;
+
+            for (int i = 0; i < Players_connected; i++)
+                if(PhotonNetwork.CurrentRoom.Players.ContainsKey(i+1))
+                    RoomPlayers[PhotonNetwork.CurrentRoom.Players[i+1].ActorNumber-1] = true;
+
+            Players_connected = PhotonNetwork.PlayerList.Length;
+        }
+
+        int a = RematchAcceptedNum();
+        if (a > 0)
+        {
+            accepted_players.enabled = true;
+            accepted_players.text = a.ToString() + "/" + Players_connected;
+        }
+        else
+            accepted_players.enabled = false;
+
+
+        if (AllPlayersRematch() && PhotonNetwork.IsMasterClient && !loading && Players_connected > 1)
         {
             loading = true;
             this.photonView.RPC("Rematch", RpcTarget.All);
@@ -88,9 +123,9 @@ public class WinScene : MonoBehaviourPun, IPunObservable
     {
         bool ret = true;
 
-        for (int i = 0; i < Players_connected; i++)
+        for (int i = 0; i < players_connected_start; i++)
         {
-            if (!Players_rematch[i])
+            if (!Players_rematch[i] && RoomPlayers[i])
             {
                 return false;
             }
@@ -103,6 +138,21 @@ public class WinScene : MonoBehaviourPun, IPunObservable
     {
         this.photonView.RequestOwnership();
         Players_rematch[num - 1] = true;
+    }
+
+    int RematchAcceptedNum()
+    {
+        int ret = 0;
+
+        for (int i = 0; i < players_connected_start; i++)
+        {
+            if (Players_rematch[i] && RoomPlayers[i])
+            {
+                ret++;
+            }
+        }
+
+        return ret;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
