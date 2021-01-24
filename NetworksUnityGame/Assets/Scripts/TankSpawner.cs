@@ -15,7 +15,7 @@ public class TankSpawner : MonoBehaviour
         switch (playerNumber)
         {
             case 1:
-                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankBlue", this.transform.position, Quaternion.identity);
+                PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankBlue", this.transform.position, Quaternion.Euler(0, 180f, 0));
                 break;
             case 2:
                 PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankRed", this.transform.position, Quaternion.identity);

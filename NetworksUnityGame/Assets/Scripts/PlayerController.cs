@@ -58,7 +58,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public TankColor tankColor;
     private string missileResourcePath = "PhotonPrefabs/Tanks/Missiles/Missile";
 
-    private AudioSource audiosource;
+    public AudioSource shotsound;
+    public AudioSource idlesound;
+    public AudioSource movingsound;
+    bool is_moving = false;
+    bool is_idle = false;
 
     private void Awake()
     {
@@ -68,7 +72,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         turret = transform.Find("Turret").gameObject;
         firePoint = turret.transform.GetChild(0).transform.Find("FirePoint");
         AimMark = GameObject.Find("AimMark");
-        
+
 
         miniTanksList = new List<GameObject>();
 
@@ -76,7 +80,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         hpbar.maxValue = (int)maxHealth;
         hpbar.value = (int)maxHealth;
 
-        audiosource = GetComponent<AudioSource>(); 
+        AudioSource[] audios = GetComponents<AudioSource>();
+        shotsound = audios[0];
+        idlesound = audios[1];
+        movingsound = audios[2];
 
         switch (tankColor)
         {
@@ -181,6 +188,21 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     {
         Vector3 movement = movementInputValue * transform.forward * moveSpeed * Time.deltaTime;
         rb.MovePosition(rb.position + movement);
+
+        if ((movementInputValue > 0 || movementInputValue < 0) && !is_moving)
+        {
+            idlesound.Stop();
+            is_moving = true;
+            is_idle = false;
+            movingsound.Play(); 
+        }
+        else if (movementInputValue == 0 && !is_idle)
+        {
+            is_moving = false;
+            is_idle = true;
+            idlesound.Play();
+            movingsound.Stop();
+        } 
     }
 
     void Turn()
@@ -214,8 +236,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     public void ShootSound()
     {
-        audiosource.PlayOneShot(audiosource.clip);
-        Debug.Log("el PEPE");
+        shotsound.PlayOneShot(shotsound.clip);
     }
 
     void FixedUpdate()
