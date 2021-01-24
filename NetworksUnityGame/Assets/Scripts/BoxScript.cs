@@ -17,6 +17,8 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
     public PowerUpType powerup;
     private string BoxSoundPrefabPath = "Map/BoxSound";
 
+    bool PUSpawned = false;
+
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -76,8 +78,9 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
         int r = Random.Range(0, 2); //% 0-4?
 
         //SpawnPowerup(powerup);
-        if (r == 0)
+        if (r == 0 && !PUSpawned)
         {
+            PUSpawned = true;
             SpawnPowerup(powerup);
         }
         PhotonNetwork.Destroy(gameObject);

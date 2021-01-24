@@ -65,7 +65,6 @@ public class PowerUp : MonoBehaviourPun
                 Vector3 pos = Vector3.zero;
                 pos.y = -10.0f;
                 this.transform.position = pos;
-                Debug.Log("CHANGE POS");
             }
             
         }
