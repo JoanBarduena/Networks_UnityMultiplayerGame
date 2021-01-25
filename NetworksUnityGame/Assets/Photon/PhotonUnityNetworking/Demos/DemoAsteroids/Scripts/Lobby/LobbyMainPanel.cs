@@ -37,6 +37,9 @@ namespace Photon.Pun.Demo.Asteroids
         public Button StartGameButton;
         public GameObject PlayerListEntryPrefab;
 
+        [Header("Controls Panel")]
+        public GameObject ControlsPanel;
+
         private Dictionary<string, RoomInfo> cachedRoomList;
         private Dictionary<string, GameObject> roomListEntries;
         private Dictionary<int, GameObject> playerListEntries;
@@ -277,6 +280,11 @@ namespace Photon.Pun.Demo.Asteroids
             SetActivePanel(RoomListPanel.name);
         }
 
+        public void OnControlsButtonClicked()
+        {
+            SetActivePanel(ControlsPanel.name);
+        }
+
         public void OnStartGameButtonClicked()
         {
             if (PhotonNetwork.CurrentRoom.PlayerCount < 2)
@@ -339,6 +347,7 @@ namespace Photon.Pun.Demo.Asteroids
             JoinRandomRoomPanel.SetActive(activePanel.Equals(JoinRandomRoomPanel.name));
             RoomListPanel.SetActive(activePanel.Equals(RoomListPanel.name));    // UI should call OnRoomListButtonClicked() to activate this
             InsideRoomPanel.SetActive(activePanel.Equals(InsideRoomPanel.name));
+            ControlsPanel.SetActive(activePanel.Equals(ControlsPanel.name));
         }
 
         private void UpdateCachedRoomList(List<RoomInfo> roomList)
