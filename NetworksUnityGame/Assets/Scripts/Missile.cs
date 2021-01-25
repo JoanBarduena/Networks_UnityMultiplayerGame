@@ -11,6 +11,8 @@ public class Missile : MonoBehaviourPun
     float timeAlive = 0;
 
     public static float maxTimeAlive = 6;
+    public GameObject spark;
+    public GameObject explosion;
 
     // Audio 
     private AudioSource audiosource; 
@@ -44,16 +46,18 @@ public class Missile : MonoBehaviourPun
             if((bounces > 1 && !photonView.IsMine) || (bounces > 0 && photonView.IsMine))
             {
                 audiosource.PlayOneShot(audiosource.clip);
+                GameObject obj = GameObject.Instantiate(spark, this.transform.position, Quaternion.identity);
+                Destroy(obj, 2.0f);
             }
-
-
 
             bounces--;
             return;
         }
 
         // TODO: change to PhotonNetwork.Instantiate 
-        Instantiate(explosionParticles, transform.position, Quaternion.identity);
+        //Instantiate(explosionParticles, transform.position, Quaternion.identity);
+        GameObject exp = GameObject.Instantiate(explosion, this.transform.position, Quaternion.identity);
+        Destroy(exp, 2.0f);
         PhotonNetwork.Destroy(gameObject);
     }
 }

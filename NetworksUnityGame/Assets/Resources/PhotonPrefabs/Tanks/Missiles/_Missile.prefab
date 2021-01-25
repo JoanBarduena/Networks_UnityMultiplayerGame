@@ -156,6 +156,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bounces: 2
   damage: 10
+  spark: {fileID: 1570927096764274, guid: 643639841fb531e4ba8097fed4eb9ac7, type: 3}
+  explosion: {fileID: 1150934714579380, guid: 779aa8c25fbd0e1488637639c9fff976, type: 3}
 --- !u!135 &6643059227589168589
 SphereCollider:
   m_ObjectHideFlags: 0
