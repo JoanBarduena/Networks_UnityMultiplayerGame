@@ -54,8 +54,19 @@ public class Missile : MonoBehaviourPun
             return;
         }
 
-        // TODO: change to PhotonNetwork.Instantiate 
-        //Instantiate(explosionParticles, transform.position, Quaternion.identity);
+        if(photonView.IsMine)
+        {
+            if (collision.collider.gameObject.tag == "Tank")
+            {
+                if (collision.collider.gameObject.GetComponent<PlayerController>().health - damage <= 0)
+                {
+                    GameObject myTank = PhotonNetwork.CurrentRoom.GetPlayer(PhotonNetwork.LocalPlayer.ActorNumber).TagObject as GameObject;
+                    myTank.GetComponent<PlayerController>().KillSound();
+                }
+            }
+        }
+        
+
         GameObject exp = GameObject.Instantiate(explosion, this.transform.position, Quaternion.identity);
         Destroy(exp, 2.0f);
 

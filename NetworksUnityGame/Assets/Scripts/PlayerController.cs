@@ -58,10 +58,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public TankColor tankColor;
     private string missileResourcePath = "PhotonPrefabs/Tanks/Missiles/Missile";
 
-    public AudioSource shotsound;
-    public AudioSource idlesound;
-    public AudioSource movingsound;
-    public AudioSource powerupsound;
+    AudioSource shotsound;
+    AudioSource idlesound;
+    AudioSource movingsound;
+    AudioSource powerupsound;
+    AudioSource kill;
+
     bool is_moving = false;
     bool is_idle = false;
     private string explosionPrefabPath = "PhotonPrefabs/Tanks/ExplosionSpawn";
@@ -88,6 +90,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         idlesound = audios[1];
         movingsound = audios[2];
         powerupsound = audios[3];
+        kill = audios[4];
 
         switch (tankColor)
         {
@@ -208,22 +211,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         if (!shoot || lastShot < 1/fireRate) return;
 
         GameObject bullet = PhotonNetwork.Instantiate(missileResourcePath, firePoint.position, Quaternion.LookRotation(turret.transform.forward));
-        bullet.GetComponent<Rigidbody>().AddForce(turret.transform.forward * 15.0f, ForceMode.Impulse);
+        bullet.GetComponent<Rigidbody>().AddForce(turret.transform.forward * 10.0f, ForceMode.Impulse);
         bullet.GetComponent<Missile>().bounces = missileBounces;
 
         lastShot = 0;
         shoot = false;
-    }
-
-    public void ShootSound()
-    {
-        shotsound.PlayOneShot(shotsound.clip);
-        transform.Find("Turret").transform.Find("TankFree_Canon").transform.Find("Muzzle").gameObject.GetComponent<ParticleSystem>().Play();
-    }
-
-    public void PowerUpSound()
-    {
-        powerupsound.PlayOneShot(powerupsound.clip);
     }
 
     void FixedUpdate()
@@ -237,6 +229,22 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         Turn();
         Aim();
         Shoot();
+    }
+
+    public void ShootSound()
+    {
+        shotsound.PlayOneShot(shotsound.clip);
+        transform.Find("Turret").transform.Find("TankFree_Canon").transform.Find("Muzzle").gameObject.GetComponent<ParticleSystem>().Play();
+    }
+
+    public void PowerUpSound()
+    {
+        powerupsound.PlayOneShot(powerupsound.clip);
+    }
+
+    public void KillSound()
+    {
+        kill.PlayOneShot(kill.clip);
     }
 
     private void InstantiateMinitanks(bool activate)
