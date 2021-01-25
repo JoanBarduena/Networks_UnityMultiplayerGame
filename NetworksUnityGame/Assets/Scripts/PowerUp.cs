@@ -66,6 +66,11 @@ public class PowerUp : MonoBehaviourPun
                 pos.y = -10.0f;
                 this.transform.position = pos;
             }
+
+            if(type == PowerUpType.HEALTH)
+            {
+                other.gameObject.transform.Find("Heal").GetComponent<ParticleSystem>().Play();
+            }
             
         }
     }
