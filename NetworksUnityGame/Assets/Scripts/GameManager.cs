@@ -102,13 +102,10 @@ public class GameManager : MonoBehaviourPun, IPunObservable
                 }
             }
 
-            string winner_name = PhotonNetwork.CurrentRoom.GetPlayer(winner).NickName;
-
             //show winner screen
             GameObject WinUI = GameObject.Find("WinScreen");
             WinUI.GetComponent<Image>().enabled = true;
             WinUI.GetComponentInChildren<Text>().enabled = true;
-            WinUI.GetComponentInChildren<Text>().text = winner_name + " has won the game!";
 
             win = true;
             WinTime = PhotonNetwork.Time;
