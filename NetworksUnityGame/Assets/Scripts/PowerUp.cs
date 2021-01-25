@@ -26,6 +26,8 @@ public class PowerUp : MonoBehaviourPun
     float activeTime = 0;
     public float maxActiveTime = 5;
 
+    ParticleSystem particles;
+
     private Vector3 rotation = new Vector3(0, 0.5f, 0);
 
     void Update()
@@ -38,6 +40,7 @@ public class PowerUp : MonoBehaviourPun
 
             if (activeTime >= maxActiveTime)
             {
+                particles.Stop();
                 activated = false;
                 player.ApplyPowerUp(type, false);
                 PhotonNetwork.Destroy(gameObject);
@@ -67,11 +70,28 @@ public class PowerUp : MonoBehaviourPun
                 this.transform.position = pos;
             }
 
-            if(type == PowerUpType.HEALTH)
+            switch (type)
             {
-                other.gameObject.transform.Find("Heal").GetComponent<ParticleSystem>().Play();
+                case PowerUpType.SPEED:
+                    break;
+                case PowerUpType.FIRE_RATE:
+                    particles = other.gameObject.transform.Find("FireRateParticle").GetComponent<ParticleSystem>();
+                    particles.Play();
+                    break;
+                case PowerUpType.BOUNCES:
+                    particles = other.gameObject.transform.Find("BouncesParticle").GetComponent<ParticleSystem>();
+                    particles.Play();
+                    break;
+                case PowerUpType.HEALTH:
+                    particles = other.gameObject.transform.Find("Heal").GetComponent<ParticleSystem>();
+                    particles.Play();
+                    break;
+                case PowerUpType.MINI_TANKS:
+                    break;
+                default:
+                    break;
             }
-            
+
         }
     }
 }
