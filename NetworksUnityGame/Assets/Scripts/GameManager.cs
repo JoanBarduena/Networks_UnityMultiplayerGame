@@ -22,7 +22,9 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     Text PlayersText;
     GameObject CD_Text;
 
-
+    GameObject CountdownSound;
+    AudioSource CountdownAudioSource;
+    bool audioplaying = false; 
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +36,10 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         PlayersIcon = GameObject.Find("PlayersIcon");
         PlayersRemaining = PhotonNetwork.PlayerList.Length;
 
-        for(int i = 0; i < PlayersRemaining; i++)
+        CountdownSound = GameObject.Find("CountdownSound");
+        CountdownAudioSource = CountdownSound.GetComponent<AudioSource>();
+
+        for (int i = 0; i < PlayersRemaining; i++)
         {
             players_alive[i] = true;
         }
@@ -50,7 +55,15 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         if (CountDown)
         {
             if (time > 1 && time < 2)
+            {
                 CD_Text.GetComponent<Text>().text = "3";
+                if (!audioplaying)
+                {
+                    audioplaying = true;
+                    CountdownAudioSource.PlayOneShot(CountdownAudioSource.clip);
+                }
+            }
+                
             else if (time > 2 && time < 3)
                 CD_Text.GetComponent<Text>().text = "2";
             else if (time > 3 && time < 4)
