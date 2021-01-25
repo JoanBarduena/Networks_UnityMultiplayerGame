@@ -13,7 +13,7 @@ public class Missile : MonoBehaviourPun
     public static float maxTimeAlive = 6;
     public GameObject spark;
     public GameObject explosion;
-
+    public GameObject explosionSound;
     // Audio 
     private AudioSource audiosource; 
    
@@ -58,6 +58,10 @@ public class Missile : MonoBehaviourPun
         //Instantiate(explosionParticles, transform.position, Quaternion.identity);
         GameObject exp = GameObject.Instantiate(explosion, this.transform.position, Quaternion.identity);
         Destroy(exp, 2.0f);
-        PhotonNetwork.Destroy(gameObject);
+
+        GameObject sound = GameObject.Instantiate(explosionSound, this.transform.position, Quaternion.identity);
+        Destroy(sound, 2.0f);
+
+        PhotonNetwork.Destroy(gameObject);   
     }
 }
