@@ -68,7 +68,10 @@ public class BoxScript : MonoBehaviourPun, IPunObservable
     {
         if (!PV.IsMine)
             return;
-        //particles
+        //particles 
+        Vector3 pos = gameObject.transform.position;
+        pos.y = 1.0f;
+        GameObject particles = PhotonNetwork.Instantiate("Map/BoxDestroyed", pos, Quaternion.identity);
         //sound effect
         GameObject boxDestoyed = PhotonNetwork.Instantiate(BoxSoundPrefabPath, gameObject.transform.position, Quaternion.identity);
         AudioSource boxSound = boxDestoyed.GetComponent<AudioSource>();
