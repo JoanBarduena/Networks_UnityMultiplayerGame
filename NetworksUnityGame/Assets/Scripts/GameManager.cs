@@ -22,9 +22,11 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     Text PlayersText;
     GameObject CD_Text;
 
-    GameObject CountdownSound;
+    GameObject SceneSounds;
     AudioSource CountdownAudioSource;
-    bool audioplaying = false; 
+    AudioSource Music;
+    bool audioplaying = false;
+    bool musicplaying = false;
 
     // Start is called before the first frame update
     void Start()
@@ -36,8 +38,10 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         PlayersIcon = GameObject.Find("PlayersIcon");
         PlayersRemaining = PhotonNetwork.PlayerList.Length;
 
-        CountdownSound = GameObject.Find("CountdownSound");
-        CountdownAudioSource = CountdownSound.GetComponent<AudioSource>();
+        SceneSounds = GameObject.Find("SceneSounds");
+        AudioSource[] audios = SceneSounds.GetComponents<AudioSource>();
+        CountdownAudioSource = audios[0];
+        Music = audios[1];
 
         for (int i = 0; i < PlayersRemaining; i++)
         {
@@ -74,6 +78,11 @@ public class GameManager : MonoBehaviourPun, IPunObservable
             {
                 CountDown = false;
                 CD_Text.GetComponent<Text>().enabled = false;
+                if(!musicplaying)
+                {
+                    musicplaying = true;
+                    Music.PlayOneShot(Music.clip);
+                }
             }
         }
 
