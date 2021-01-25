@@ -42,7 +42,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     float speedIncrease = 3;
     float fireRateIncrease = 2f;
     float healthIncrease = 50;
-    List<GameObject> miniTanksList;
 
     // tank parts
     protected Vector3 aimPoint;
@@ -78,8 +77,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         firePoint = turret.transform.GetChild(0).transform.Find("FirePoint");
         AimMark = GameObject.Find("AimMark");
 
-
-        miniTanksList = new List<GameObject>();
 
         canvas = gameObject.GetComponentInChildren<Canvas>();
         hpbar.maxValue = (int)maxHealth;
@@ -253,18 +250,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         {
             Vector3 pos = transform.position;
             pos.z += 5;
-            miniTanksList.Add(PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankMini", pos, Quaternion.identity));
+            PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankMini", pos, Quaternion.identity);
             pos.z -= 10;
-            miniTanksList.Add(PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankMini", pos, Quaternion.identity));
+            PhotonNetwork.Instantiate("PhotonPrefabs/Tanks/TankMini", pos, Quaternion.identity);
             //miniTanksList.Add(Instantiate((GameObject)Resources.Load("PhotonPrefabs/Tanks/TankMini"), pos, Quaternion.identity));
         }
-        else
-        {
-            foreach (GameObject obj in miniTanksList)
-            {
-                PhotonNetwork.Destroy(obj);
-            }
-        }
+        //else
+        //{
+        //    foreach (GameObject obj in miniTanksList)
+        //    {
+        //        PhotonNetwork.Destroy(obj);
+        //    }
+        //}
     }
 
     public void ApplyPowerUp(PowerUpType type, bool activate)
