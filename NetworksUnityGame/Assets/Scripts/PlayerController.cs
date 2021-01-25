@@ -218,6 +218,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public void ShootSound()
     {
         shotsound.PlayOneShot(shotsound.clip);
+        transform.Find("Turret").transform.Find("TankFree_Canon").transform.Find("Muzzle").gameObject.GetComponent<ParticleSystem>().Play();
     }
 
     public void PowerUpSound()
