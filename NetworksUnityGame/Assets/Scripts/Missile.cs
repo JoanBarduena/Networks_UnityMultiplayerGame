@@ -41,7 +41,7 @@ public class Missile : MonoBehaviourPun
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (bounces > 0 && collision.collider.gameObject.tag != "Tank" && collision.collider.gameObject.tag != "Box")
+        if (bounces > 0 && collision.collider.gameObject.tag != "Tank" && collision.collider.gameObject.tag != "Box" && collision.collider.gameObject.tag != "MiniTank")
         {
             if((bounces > 1 && !photonView.IsMine) || (bounces > 0 && photonView.IsMine))
             {

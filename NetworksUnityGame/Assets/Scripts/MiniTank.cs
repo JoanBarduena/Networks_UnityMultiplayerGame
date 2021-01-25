@@ -1,12 +1,18 @@
 ﻿using Photon.Pun;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+
 
 public class MiniTank : PlayerController
 {
 
     public GameObject target;
     private NavMeshAgent agent;
+
+    float timeAlive = 0;
+    float maxTimeAlive = 20;
+
 
     private void Awake()
     {
@@ -27,11 +33,19 @@ public class MiniTank : PlayerController
     {
 
         var tanks = GameObject.FindGameObjectsWithTag("Tank");
+        float min = 99999999;
+
         for(int i=0; i<tanks.Length; i++)
         {
             if (!tanks[i].GetPhotonView().IsMine)
             {
-                target = tanks[i];
+                float d = Mathf.Abs(Vector3.Distance(tanks[i].transform.position, transform.position));
+                if (min > d)
+                {
+                    min = d;
+                    target = tanks[i];
+                }
+                
             }
         }
     }
@@ -49,6 +63,12 @@ public class MiniTank : PlayerController
         else
         {
             PickTarget();
+        }
+
+        timeAlive += Time.deltaTime;
+        if (timeAlive > maxTimeAlive)
+        {
+            PhotonNetwork.Destroy(gameObject);
         }
     }
 
@@ -71,9 +91,9 @@ public class MiniTank : PlayerController
 
     private void OnCollisionEnter(Collision collision)
     {
-        //if (collision.gameObject.CompareTag("Tank"))
-        //{
-        //    Destroy(gameObject);
-        //}
+        if (collision.gameObject.CompareTag("Missile"))
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
     }
 }
