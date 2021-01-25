@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     public GameObject playerKiller;
 
     public TankColor tankColor;
-    private string missileResourcePath = "PhotonPrefabs/Tanks/Missiles/Missile";
+    protected string missileResourcePath = "PhotonPrefabs/Tanks/Missiles/Missile";
 
     AudioSource shotsound;
     AudioSource idlesound;
@@ -107,7 +107,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
                 missileResourcePath += "Yellow";
                 break;
             default:
-                Debug.LogError("Tank should be of some color");
+                missileResourcePath += "Green";
                 break;
         }
 

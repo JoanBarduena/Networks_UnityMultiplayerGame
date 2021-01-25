@@ -12,7 +12,7 @@ public class MiniTank : PlayerController
     {
         turret = transform.Find("Turret").gameObject;
         firePoint = turret.transform.GetChild(0).transform.Find("FirePoint");
-
+        missileResourcePath = "PhotonPrefabs/Tanks/Missiles/MissileGreen";
         agent = GetComponent<NavMeshAgent>();
 
         health = 1;
@@ -63,16 +63,17 @@ public class MiniTank : PlayerController
 
     private void FixedUpdate()
     {
-        
+        if (!photonView.IsMine)
+            return;
         Shoot();
         shoot = true;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Tank"))
-        {
-            Destroy(gameObject);
-        }
+        //if (collision.gameObject.CompareTag("Tank"))
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 }
