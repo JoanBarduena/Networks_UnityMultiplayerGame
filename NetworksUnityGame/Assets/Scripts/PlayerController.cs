@@ -45,9 +45,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
     List<GameObject> miniTanksList;
 
     // tank parts
-    Vector3 aimPoint;
-    GameObject turret;
-    Transform firePoint;
+    protected Vector3 aimPoint;
+    protected GameObject turret;
+    protected Transform firePoint;
 
     GameObject AimMark;
     GameObject GM;

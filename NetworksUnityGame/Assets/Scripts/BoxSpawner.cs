@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.AI;
 using UnityEngine;
 using Photon.Pun;
 
@@ -23,6 +24,9 @@ public class BoxSpawner : MonoBehaviour
     public void SpawnBox()
     {
         Vector3 pos = new Vector3(this.transform.position.x, -0.13f, this.transform.position.z);
-        PhotonNetwork.InstantiateRoomObject("Map/Box", pos, Quaternion.identity);
+        GameObject obj = PhotonNetwork.InstantiateRoomObject("Map/Box", pos, Quaternion.identity);
+        NavMeshObstacle obs = obj.AddComponent<NavMeshObstacle>();
+        obs.carving = true;
+        obs.carveOnlyStationary = true;
     }
 }

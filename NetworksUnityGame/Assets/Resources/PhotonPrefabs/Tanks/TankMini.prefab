@@ -13,17 +13,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpbar: {fileID: 0}
-  health: 100
+  health: 1
   moveSpeed: 5
   turnSpeed: 180
-  fireRate: 2
+  fireRate: 0.5
   killer: 0
   playerKiller: {fileID: 0}
   tankColor: 0
-  shotsound: {fileID: 0}
-  idlesound: {fileID: 0}
-  movingsound: {fileID: 0}
-  powerupsound: {fileID: 0}
   losePrefab: {fileID: 0}
   target: {fileID: 0}
 --- !u!195 &695645913
@@ -64,6 +60,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TankMini
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354916976622783175, guid: 997823ade0e2fc249a876fa159f69cc3,
+        type: 3}
+      propertyPath: m_TagString
+      value: MiniTank
       objectReference: {fileID: 0}
     - target: {fileID: 4024992501267447158, guid: 997823ade0e2fc249a876fa159f69cc3,
         type: 3}
@@ -150,6 +151,21 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 0ef5c902452298d4082f46eab72187cb, type: 2}
+    - target: {fileID: 8631677291743228511, guid: 997823ade0e2fc249a876fa159f69cc3,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 4.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 8631677291743228511, guid: 997823ade0e2fc249a876fa159f69cc3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8631677291743228511, guid: 997823ade0e2fc249a876fa159f69cc3,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 1.6
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -695559335632113123, guid: 997823ade0e2fc249a876fa159f69cc3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 997823ade0e2fc249a876fa159f69cc3, type: 3}
