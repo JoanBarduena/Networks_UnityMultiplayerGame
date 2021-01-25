@@ -22,9 +22,11 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     Text PlayersText;
     GameObject CD_Text;
 
-    GameObject CountdownSound;
+    GameObject SceneSounds;
     AudioSource CountdownAudioSource;
-    bool audioplaying = false; 
+    AudioSource Music;
+    bool audioplaying = false;
+    bool musicplaying = false;
 
     // Start is called before the first frame update
     void Start()
@@ -36,8 +38,10 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         PlayersIcon = GameObject.Find("PlayersIcon");
         PlayersRemaining = PhotonNetwork.PlayerList.Length;
 
-        CountdownSound = GameObject.Find("CountdownSound");
-        CountdownAudioSource = CountdownSound.GetComponent<AudioSource>();
+        SceneSounds = GameObject.Find("SceneSounds");
+        AudioSource[] audios = SceneSounds.GetComponents<AudioSource>();
+        CountdownAudioSource = audios[0];
+        Music = audios[1];
 
         for (int i = 0; i < PlayersRemaining; i++)
         {
@@ -74,6 +78,11 @@ public class GameManager : MonoBehaviourPun, IPunObservable
             {
                 CountDown = false;
                 CD_Text.GetComponent<Text>().enabled = false;
+                if(!musicplaying)
+                {
+                    musicplaying = true;
+                    Music.PlayOneShot(Music.clip);
+                }
             }
         }
 
@@ -93,13 +102,10 @@ public class GameManager : MonoBehaviourPun, IPunObservable
                 }
             }
 
-            string winner_name = PhotonNetwork.CurrentRoom.GetPlayer(winner).NickName;
-
             //show winner screen
             GameObject WinUI = GameObject.Find("WinScreen");
             WinUI.GetComponent<Image>().enabled = true;
             WinUI.GetComponentInChildren<Text>().enabled = true;
-            WinUI.GetComponentInChildren<Text>().text = winner_name + " has won the game!";
 
             win = true;
             WinTime = PhotonNetwork.Time;
@@ -113,7 +119,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
 
             if (PhotonNetwork.IsMasterClient /*&& all players accept rematch*/)
             {
-                if (PhotonNetwork.Time - WinTime > 2 && !change_sceen)
+                if (PhotonNetwork.Time - WinTime > 4 && !change_sceen)
                 {
                     change_sceen = true;
                     this.photonView.RPC("WinScreen", RpcTarget.All);
